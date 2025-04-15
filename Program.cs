@@ -1,95 +1,88 @@
-﻿using JsonDiffPatchDotNet;
-using JsonDiffPatchDotNet.Formatters.JsonPatch;
-using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.JsonPatch.Operations;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
-using MSOperation = Microsoft.AspNetCore.JsonPatch.Operations.Operation;
-using Operation = JsonDiffPatchDotNet.Formatters.JsonPatch.Operation;
-
+﻿using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Unicode;
 
 var originalFile = args[0];
 var translatedFile = args[1];
 
+var originalFileText = File.ReadAllText(originalFile, Encoding.UTF8);
+var translatedFileText = File.ReadAllText(translatedFile, Encoding.UTF8);
+
+var original = JsonNode.Parse(originalFileText)!.Root;
+var translated = JsonNode.Parse(translatedFileText)!.Root;
 
 
-var originalFileText = File.ReadAllText(originalFile);
-var translatedFileText = File.ReadAllText(translatedFile);
+var encoderSettings = new TextEncoderSettings();
 
-var original = JToken.Parse(originalFileText);
-var translated = JToken.Parse(translatedFileText);
-
-var patchForRight = GetOperations(original, translated).ToList();
-var patchForLeft = GetOperations(translated, original).ToList();
-
-if (patchForRight.Any())
+var stream = new MemoryStream();
+var jsonWriter = new Utf8JsonWriter(stream, new JsonWriterOptions
 {
-    Patch(translated, patchForRight);
-    WritePatchedFile(translatedFile, translated);
-}
+    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+    Indented = true,
+});
+WalkAndWrite(original, translated, jsonWriter);
 
-if (patchForLeft.Any())
+jsonWriter.Flush();
+
+string json = Encoding.UTF8.GetString(stream.ToArray());
+
+var outFileName = Path.GetFileNameWithoutExtension(translatedFile);
+File.WriteAllText($"{outFileName}_patched.json", json);
+
+
+static void WalkAndWrite(JsonNode original, JsonNode translated, Utf8JsonWriter writer)
 {
-    Patch(original, patchForLeft);
-    WritePatchedFile(originalFile, original);
-}
-
-IEnumerable<MSOperation> GetOperations(JToken original, JToken translated)
-{
-    var jdp = new JsonDiffPatch(); ;
-
-    var diff = jdp.Diff(translated, original);
-
-    var formatter = new JsonDeltaFormatter();
-    var ops = formatter.Format(diff);
-    return ops.Where(op => op.GetOperationType() is OperationType.Add)
-        .Select(ConvertToMsOperation);
-}
-
-static void Patch(JToken json, List<MSOperation> operations)
-{
-    var patchDoc = new JsonPatchDocument(operations, new DefaultContractResolver());
-    patchDoc.ApplyTo(json);
-}
-
-static void WritePatchedFile(string oldFileName, JToken json)
-{
-    var fileName = Path.GetFileNameWithoutExtension(oldFileName);
-    File.WriteAllText($"{fileName}_patched.json" ,json.ToString());
-}
-
-MSOperation ConvertToMsOperation(Operation op) => new(op.Op, op.Path, op.From, ReplaceValues((JToken)op.Value));
-
-static JToken ReplaceValues(JToken jToken)
-{
-    if (jToken is JValue value)
+    var valueKind = original.GetValueKind();
+    if (valueKind is JsonValueKind.String)
     {
-        return JValue.CreateString($"<<replaceme>> {value}");
+        if (translated.TryGetPath(original.GetPath().Substring(2), out var node))
+        {
+            writer.WritePropertyName(node!.GetPropertyName());
+            node.WriteTo(writer);
+        }
+        else
+        {
+            writer.WritePropertyName(original.GetPropertyName());
+            writer.WriteStringValue(original.ReplaceMeValue());
+        }
+        return;
+    } 
+    if (valueKind is JsonValueKind.Object)
+    {
+        if (original.Parent is not null) 
+            writer.WritePropertyName(original.GetPropertyName());
+        writer.WriteStartObject();
+        foreach (var (_, child) in original.AsObject())
+        {
+            WalkAndWrite(child, translated, writer);
+        }
+        writer.WriteEndObject();
+        return;
     }
 
-    if (jToken is JObject jObject)
+    throw new ArgumentOutOfRangeException(nameof(original));
+}
+
+static class Extensions
+{
+    internal static string ReplaceMeValue(this JsonNode node) => $"<<replaceme>> {node.GetValue<string>()}";
+    internal static bool TryGetPath(this JsonNode? node, string path, out JsonNode? result)
     {
-        foreach (var child in jObject)
+        result = null;
+        if (node is null)
+            return false;
+    
+        var dotIndex = path.IndexOf('.');
+        if (dotIndex == -1)
         {
-            jObject[child.Key] = ReplaceValues(child.Value);
+            result = node[path];
+            return node[path] is not null;
         }
 
-        return jObject;
-    }
-
-    throw new ArgumentOutOfRangeException(nameof(jToken));
+        return TryGetPath(node[path.Substring(0, dotIndex)], path.Substring(dotIndex+1), out result);
+    } 
 }
 
-static class OperationExtensions
-{
-    internal static OperationType GetOperationType(this Operation op) => op.Op.ToLowerInvariant() switch
-    {
-        "add" => OperationType.Add,
-        "remove" => OperationType.Remove,
-        "replace" => OperationType.Replace,
-        "move" => OperationType.Move,
-        "copy" => OperationType.Copy,
-        "test" => OperationType.Test,
-        _ => throw new ArgumentOutOfRangeException(nameof(op))
-    };
-}
+

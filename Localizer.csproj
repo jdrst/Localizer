@@ -6,12 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="JsonDiffPatch.Net" Version="2.4.0" />
-      <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="9.0.4" />
-    </ItemGroup>
-
+    
     <ItemGroup>
       <None Update="locale.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>

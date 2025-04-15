@@ -4,9 +4,10 @@
   "SpecialChars": "\" \\ @ ß \r\n {0}",
   "Sub": {
     "SubText": "Abc",
-    "SubText2": "Xyz",
-    "DoublyNested": {
-      "Something": "Something"
-    }
+    "SubText2": "Xyz"
+  },
+  "DoublyNested": {
+    "Something": "Something",
+    "Found": "found"
   }
 }
