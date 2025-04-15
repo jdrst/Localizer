@@ -1,0 +1,10 @@
+﻿{
+  "TestKey": "Neutral",
+  "Sub": {
+    "SubText": "Abc"
+  },
+  "NotInLeft": "Foo",
+  "ObjectNotInLeft": {
+    "SubValue": "value"
+  }
+}
