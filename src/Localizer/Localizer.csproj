@@ -8,12 +8,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-      <None Update="locale.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="locale_en.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+        <InternalsVisibleTo Include="Localizer.Tests" />
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Localizer", "Localizer.csproj", "{F5BF726E-6E23-4005-BA21-DDE03E3861A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Localizer", "src/Localizer/Localizer.csproj", "{F5BF726E-6E23-4005-BA21-DDE03E3861A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6B3EE8F1-36E9-4F60-9DD1-86E5E4726084}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1A49AA52-C0C1-4E96-A3AA-8FA446820DB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Localizer.Tests", "tests\Localizer.Tests\Localizer.Tests.csproj", "{38413B92-CB16-4B19-A501-8B790FB672E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +18,13 @@ Global
 		{F5BF726E-6E23-4005-BA21-DDE03E3861A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5BF726E-6E23-4005-BA21-DDE03E3861A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5BF726E-6E23-4005-BA21-DDE03E3861A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38413B92-CB16-4B19-A501-8B790FB672E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38413B92-CB16-4B19-A501-8B790FB672E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38413B92-CB16-4B19-A501-8B790FB672E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38413B92-CB16-4B19-A501-8B790FB672E9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F5BF726E-6E23-4005-BA21-DDE03E3861A4} = {6B3EE8F1-36E9-4F60-9DD1-86E5E4726084}
+		{38413B92-CB16-4B19-A501-8B790FB672E9} = {1A49AA52-C0C1-4E96-A3AA-8FA446820DB0}
 	EndGlobalSection
 EndGlobal
