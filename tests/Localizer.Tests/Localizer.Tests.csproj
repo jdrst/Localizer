@@ -26,7 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Localizer\Localizer.csproj" />
+    <ProjectReference Include="..\..\src\Localizer.Core\Localizer.Core.csproj" />
+    <ProjectReference Include="..\..\src\Localizer.Infrastructure\Localizer.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,6 +3,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Localizer;
+using Localizer.Provider;
 
 var originalFile = args[0];
 var translatedFile = args[1];

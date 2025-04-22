@@ -2,7 +2,7 @@
 
 namespace Localizer.Abstractions;
 
-internal interface ITranslationTextProvider
+public interface ITranslationTextProvider
 {
     public string GetTranslationFor(string value, CultureInfo cultureInfo);
 }

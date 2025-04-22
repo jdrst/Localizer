@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
 using Localizer.Abstractions;
 
-namespace Localizer;
+namespace Localizer.Provider;
 
-internal class ReplaceMeTranslationTextProvider : ITranslationTextProvider
+public class ReplaceMeTranslationTextProvider : ITranslationTextProvider
 {
     public string GetTranslationFor(string value, CultureInfo cultureInfo) => $"<<replaceme>> {value}";
 }

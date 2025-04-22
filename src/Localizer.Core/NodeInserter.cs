@@ -6,9 +6,9 @@ using Localizer.Extensions;
 
 namespace Localizer;
 
-internal static class NodeInserter
+public static class NodeInserter
 {
-    internal static void InsertMissingNodes(JsonObject from, JsonObject to, ITranslationTextProvider translationTextProvider)
+    public static void InsertMissingNodes(JsonObject from, JsonObject to, ITranslationTextProvider translationTextProvider)
     {
         foreach (var (propName, fromChild) in from.AsObject())
         {
