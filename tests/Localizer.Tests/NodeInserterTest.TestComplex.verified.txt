@@ -1,23 +1,4 @@
-﻿From:
-{
-  "TestKey": "Neutral",
-  "OnlyHere": "Nür hiär",
-  "SpecialChars": "\" \\ @ ß \r\n {0}",
-  "Sub": {
-    "SubText": "Abc",
-    "SubText2": "Xyz"
-  },
-  "NotInOther": "<<replaceme>> Foo",
-  "ObjectNotInOther": {
-    "SubValue": "<<replaceme>> value"
-  },
-  "DoublyNested": {
-    "Something": "Something",
-    "Found": "found"
-  }
-}
-To:
-{
+﻿{
   "TestKey": "Neutral",
   "OnlyHere": "<<replaceme>> Nür hiär",
   "SpecialChars": "<<replaceme>> \" \\ @ ß \r\n {0}",

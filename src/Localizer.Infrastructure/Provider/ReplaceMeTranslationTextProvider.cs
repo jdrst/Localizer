@@ -3,7 +3,13 @@ using Localizer.Abstractions;
 
 namespace Localizer.Provider;
 
-public class ReplaceMeTranslationTextProvider : ITranslationTextProvider
+internal class ReplaceMeTranslationTextProvider : ITranslationTextProvider
 {
-    public string GetTranslationFor(string value, CultureInfo cultureInfo) => $"<<replaceme>> {value}";
+    public bool UsesConsole() => false;
+    // public Task<string> GetTranslationFor(string value, CultureInfo cultureInfo) => Task.FromResult($"<<replaceme>> {value}");
+    public async Task<string> GetTranslationFor(string value, CultureInfo cultureInfo)
+    {
+        await Task.Delay(1000); //TODO 
+        return $"<<replaceme>> {value}";
+    }
 }

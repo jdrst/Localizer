@@ -5,8 +5,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Localizer.Core\Localizer.Core.csproj" />
-      <ProjectReference Include="..\Localizer.Infrastructure\Localizer.Infrastructure.csproj" />
+        <PackageReference Include="Spectre.Console.Cli" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="..\Localizer.Core\Localizer.Core.csproj" />
+        <ProjectReference Include="..\Localizer.Infrastructure\Localizer.Infrastructure.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Update="locale.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="locale_en.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

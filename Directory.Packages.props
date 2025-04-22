@@ -2,6 +2,22 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
+    
   <ItemGroup>
+      <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
+      <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
+      <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="9.0.4" />
+  </ItemGroup>
+    
+  <ItemGroup Label="External">
+      <PackageVersion Include="Spectre.Console.Cli" Version="0.50.1-preview.0.5" />
+  </ItemGroup>
+    
+  <ItemGroup Label="Tests">
+      <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+      <PackageVersion Include="Shouldly" Version="4.3.0" />
+      <PackageVersion Include="Verify.XunitV3" Version="29.2.0" />
+      <PackageVersion Include="xunit.v3" Version="2.0.1" />
+      <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.2" />
   </ItemGroup>
 </Project>

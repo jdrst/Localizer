@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -9,23 +10,23 @@ namespace Localizer.Tests;
 public class NodeInserterTest
 {
     [Fact]
-    public void TestString()
+    public async Task TestString()
     {
         var from = JsonNode.Parse("{ \"hello\": \"text\" }")!.AsObject();
         var to = JsonNode.Parse("{}")!.AsObject();
 
-        NodeInserter.InsertMissingNodes(from, to, new ReplaceMeTranslationTextProvider());
+        await NodeInserter.InsertMissingNodes(from, to, new ReplaceMeTranslationTextProvider(), CultureInfo.InvariantCulture);
         
         to["hello"]!.GetValue<string>().ShouldBe("<<replaceme>> text");
     }
     
     [Fact]
-    public void TestObject()
+    public async Task TestObject()
     {
         var from = JsonNode.Parse("{ \"foo\": {\"some\": \"text\"} }")!.AsObject();
         var to = JsonNode.Parse("{}")!.AsObject();
 
-        NodeInserter.InsertMissingNodes(from, to, new ReplaceMeTranslationTextProvider());
+        await NodeInserter.InsertMissingNodes(from, to, new ReplaceMeTranslationTextProvider(), CultureInfo.InvariantCulture);
         
         to["foo"]!["some"]!.GetValue<string>().ShouldBe("<<replaceme>> text");
     }
@@ -64,15 +65,9 @@ public class NodeInserterTest
                                 }
                                 """)!.AsObject();
         
-        NodeInserter.InsertMissingNodes(from, to, new ReplaceMeTranslationTextProvider());
-        NodeInserter.InsertMissingNodes(to, from, new ReplaceMeTranslationTextProvider());
+        await NodeInserter.InsertMissingNodes(from, to, new ReplaceMeTranslationTextProvider(), CultureInfo.InvariantCulture);
 
         var jsonSerializerOptions = new JsonSerializerOptions{WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,};
-        await Verify($"""
-                      From:
-                      {from.ToJsonString(jsonSerializerOptions)}
-                      To:
-                      {to.ToJsonString(jsonSerializerOptions)}
-                      """);
+        await Verify(to.ToJsonString(jsonSerializerOptions));
     }
 }

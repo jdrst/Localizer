@@ -4,5 +4,6 @@ namespace Localizer.Abstractions;
 
 public interface ITranslationTextProvider
 {
-    public string GetTranslationFor(string value, CultureInfo cultureInfo);
+    public bool UsesConsole();
+    public Task<string> GetTranslationFor(string value, CultureInfo cultureInfo);
 }

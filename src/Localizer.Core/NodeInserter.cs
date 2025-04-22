@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Localizer.Abstractions;
@@ -8,7 +9,7 @@ namespace Localizer;
 
 public static class NodeInserter
 {
-    public static void InsertMissingNodes(JsonObject from, JsonObject to, ITranslationTextProvider translationTextProvider)
+    public static async Task InsertMissingNodes(JsonObject from, JsonObject to, ITranslationTextProvider translationTextProvider, CultureInfo cultureInfo)
     {
         foreach (var (propName, fromChild) in from.AsObject())
         {
@@ -16,8 +17,8 @@ public static class NodeInserter
             if (toChild is null)
             {
                 to.Insert(from.IndexOf(propName), propName,
-                    fromChild!.DeepCloneAndReplaceText(translationTextProvider.GetTranslationFor,
-                        CultureInfo.InvariantCulture));
+                    await fromChild!.DeepCloneAndReplaceText(translationTextProvider.GetTranslationFor,
+                        cultureInfo));
                 continue;
             }
 
@@ -33,7 +34,7 @@ public static class NodeInserter
 
             if (childKind is JsonValueKind.Object && otherKind is JsonValueKind.Object)
             {
-                InsertMissingNodes(fromChild.AsObject(), toChild.AsObject(), translationTextProvider);
+                await InsertMissingNodes(fromChild.AsObject(), toChild.AsObject(), translationTextProvider, cultureInfo);
                 continue;
             }
 
@@ -43,8 +44,8 @@ public static class NodeInserter
             // TODO: log this as warning!
             to.Remove(propName);
             to.Insert(from.IndexOf(propName), propName,
-                fromChild.DeepCloneAndReplaceText(translationTextProvider.GetTranslationFor,
-                    CultureInfo.InvariantCulture));
+                await fromChild.DeepCloneAndReplaceText(translationTextProvider.GetTranslationFor,
+                    cultureInfo));
         }
     }
 }
