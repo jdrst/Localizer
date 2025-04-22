@@ -3,7 +3,7 @@ using Spectre.Console.Cli;
 
 namespace Localizer;
 
-public class TypeRegistrar(IServiceCollection services) : ITypeRegistrar
+internal sealed class TypeRegistrar(IServiceCollection services) : ITypeRegistrar
 {
     public void Register(Type service, Type implementation) 
         => services.AddSingleton(service, implementation);
@@ -21,7 +21,7 @@ public class TypeRegistrar(IServiceCollection services) : ITypeRegistrar
         => new TypeResolver(services.BuildServiceProvider());
 }
 
-public sealed class TypeResolver(IServiceProvider provider) : ITypeResolver, IDisposable
+internal sealed class TypeResolver(IServiceProvider provider) : ITypeResolver, IDisposable
 {
     private readonly IServiceProvider _provider = provider ?? throw new ArgumentNullException(nameof(provider));
 

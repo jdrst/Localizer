@@ -3,7 +3,9 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Localizer</RootNamespace>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <AnalysisMode>All</AnalysisMode>
+        <NoWarn>CA2007</NoWarn>
     </PropertyGroup>
     
     <ItemGroup>

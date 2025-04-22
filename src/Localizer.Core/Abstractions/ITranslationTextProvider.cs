@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Localizer.Abstractions;
+namespace Localizer.Core.Abstractions;
 
 public interface ITranslationTextProvider
 {

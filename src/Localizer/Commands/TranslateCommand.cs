@@ -1,17 +1,18 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
-using Localizer.Abstractions;
+using Localizer.Core;
+using Localizer.Core.Abstractions;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
 namespace Localizer.Commands;
 
-public class TranslateCommand(IAnsiConsole console, IFileHandler fileHandler, ITranslationTextProvider translationTextProvider) : AsyncCommand<TranslateCommand.Settings>
+internal class TranslateCommand(IAnsiConsole console, IFileHandler fileHandler, ITranslationTextProvider translationTextProvider) : AsyncCommand<TranslateCommand.Settings>
 {
     public const string Name = "translate";
     public const string Description = "foo bar"; //TODO
     public const string Example = "translate locale.json";
-    public class Settings : CommandSettings
+    internal class Settings : CommandSettings
     {
         [Description("Base file that is used by 'kli.Localize'")]
         [CommandArgument(0, "[base file]")]
@@ -32,8 +33,8 @@ public class TranslateCommand(IAnsiConsole console, IFileHandler fileHandler, IT
 
         if (!success)
         {
-            foreach (var e in fileHandler.Errors())
-                console.WriteLine(e.Message);
+            foreach (var e in fileHandler.Messages())
+                console.WriteLine(e.Text);
             return -1;
         }
         

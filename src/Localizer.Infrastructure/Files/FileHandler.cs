@@ -3,19 +3,18 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Localizer.Abstractions;
-using Microsoft.Extensions.Logging;
-using Localizer.Logging;
+using Localizer.Core;
+using Localizer.Core.Abstractions;
 
-namespace Localizer;
+namespace Localizer.Infrastructure.Files;
 
-public class FileHandler(ILogger<FileHandler> _logger) : IFileHandler
+public class FileHandler : IFileHandler
 {
     private JsonObject _base = null!;
     private CulturedJson[] _culturedJsons = [];
-    private List<Error> _errors = [];
+    private readonly List<Message> _messages = [];
     
-    private JsonSerializerOptions _jsonSerializerOptions = new()
+    private readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
         WriteIndented = true
@@ -23,7 +22,7 @@ public class FileHandler(ILogger<FileHandler> _logger) : IFileHandler
     
     public CulturedJson[] CulturedJsons() => _culturedJsons;
 
-    public IReadOnlyList<Error> Errors() => _errors.AsReadOnly();
+    public IReadOnlyList<Message> Messages() => _messages.AsReadOnly();
 
     public JsonObject Base() => _base;
     public async Task<bool> InitializeAsync(string baseFilePath)
@@ -33,8 +32,7 @@ public class FileHandler(ILogger<FileHandler> _logger) : IFileHandler
         
         if (!File.Exists(baseFilePath))
         {
-            _errors.Add(new($"File '{baseFilePath}' doesn't exists in '{workingDir}'."));
-            _logger.FileDoesntExist(baseFilePath);
+            _messages.Add(Message.Error($"File '{baseFilePath}' doesn't exists in '{workingDir}'."));
             return false;
         }
         
@@ -44,8 +42,7 @@ public class FileHandler(ILogger<FileHandler> _logger) : IFileHandler
 
         if (files.Length < 1)
         {
-            _errors.Add(new($"Couldn't find any translation files with search pattern {searchPattern} in {Environment.CurrentDirectory}."));
-            _logger.CouldNotFindLocales(baseFilePath);
+            _messages.Add(Message.Error($"Couldn't find any translation files with search pattern {searchPattern} in {Environment.CurrentDirectory}."));
             return false;
         }
 
@@ -64,19 +61,19 @@ public class FileHandler(ILogger<FileHandler> _logger) : IFileHandler
         return true;
     }
 
-    public async Task WriteFilesAsync(string prefix)
+    public async Task WriteFilesAsync(string? prefix)
     {
         foreach (var (path, json, _) in _culturedJsons)
             await WriteFileAsync(path, prefix, json);
     }
 
-    private async Task<JsonObject> ReadFileAsync(string path)
+    private static async Task<JsonObject> ReadFileAsync(string path)
     {
         var fileText = await File.ReadAllTextAsync(path, Encoding.UTF8);
         return JsonNode.Parse(fileText)!.Root.AsObject();
     }
 
-    private async Task WriteFileAsync(string path, string prefix, JsonObject jsonObject)
+    private async Task WriteFileAsync(string path, string? prefix, JsonObject jsonObject)
     {
         string serializedJson = jsonObject.ToJsonString(_jsonSerializerOptions);
 

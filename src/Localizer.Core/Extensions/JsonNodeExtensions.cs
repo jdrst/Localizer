@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-namespace Localizer.Extensions;
+namespace Localizer.Core.Extensions;
 
 internal static class JsonNodeExtensions
 {

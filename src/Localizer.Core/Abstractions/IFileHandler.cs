@@ -1,10 +1,10 @@
 ﻿using System.Text.Json.Nodes;
 
-namespace Localizer.Abstractions;
+namespace Localizer.Core.Abstractions;
 
 public interface IFileHandler
 {
-    public IReadOnlyList<Error> Errors();
+    public IReadOnlyList<Message> Messages();
     public JsonObject Base();
     public Task<bool> InitializeAsync(string baseFilePath);
 

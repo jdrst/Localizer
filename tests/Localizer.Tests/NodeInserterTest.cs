@@ -2,7 +2,8 @@ using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Localizer.Provider;
+using Localizer.Core;
+using Localizer.Infrastructure.Provider;
 using Shouldly;
 
 namespace Localizer.Tests;

@@ -1,24 +1,27 @@
-﻿using System.Collections;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Localizer.Abstractions;
-using Localizer.Extensions;
+using Localizer.Core.Abstractions;
+using Localizer.Core.Extensions;
 
-namespace Localizer;
+namespace Localizer.Core;
 
 public static class NodeInserter
 {
     public static async Task InsertMissingNodes(JsonObject from, JsonObject to, ITranslationTextProvider translationTextProvider, CultureInfo cultureInfo)
     {
-        foreach (var (propName, fromChild) in from.AsObject())
+        ArgumentNullException.ThrowIfNull(translationTextProvider);
+        ArgumentNullException.ThrowIfNull(from);
+        ArgumentNullException.ThrowIfNull(to);
+        
+        foreach (var (propName, fromChild) in from)
         {
             var toChild = to[propName];
             if (toChild is null)
             {
-                to.Insert(from.IndexOf(propName), propName,
-                    await fromChild!.DeepCloneAndReplaceText(translationTextProvider.GetTranslationFor,
-                        cultureInfo));
+                    to.Insert(from.IndexOf(propName), propName,
+                        await fromChild!.DeepCloneAndReplaceText(translationTextProvider.GetTranslationFor,
+                            cultureInfo));
                 continue;
             }
 
