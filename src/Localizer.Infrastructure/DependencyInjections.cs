@@ -1,4 +1,5 @@
-﻿using Localizer.Core.Abstractions;
+﻿using Localizer.Application.Abstractions;
+using Localizer.Core.Abstractions;
 using Localizer.Infrastructure.Configuration;
 using Localizer.Infrastructure.Files;
 using Localizer.Infrastructure.Provider;
@@ -16,24 +17,27 @@ public static class DependencyInjections
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         => services.AddSingleton<ITranslationTextProvider, PromptTranslationTextProvider>()
             .AddSingleton<IFileHandler, FileHandler>()
-            .AddLogging(builder => builder.AddConsole());
+            .AddLogging(builder => builder.AddConsole())
+            .AddSingleton<IAppInfo, AppInfo>()
+            .AddScoped<IConfigValueSetter, ConfigValueSetter>()
+            .AddScoped<IConfigValueGetter, ConfigValueGetter>();
 
     public static IServiceCollection AddConfiguration(this IServiceCollection services)
     {
-        using var config = new ConfigurationManager();
+        var configBuilder = new ConfigurationBuilder();
         using var fileProvider = new PhysicalFileProvider(AppContext.BaseDirectory, ExclusionFilters.System | ExclusionFilters.Hidden);
-            
-        config
-        .SetBasePath(AppContext.BaseDirectory)
-        .SetFileProvider(fileProvider)
-        .AddJsonFile(Path.Join(AppContext.BaseDirectory, Paths.AppSettingsFile))
-        .AddJsonFile(
-            Path.GetRelativePath(AppContext.BaseDirectory,
-                Path.Join(Environment.CurrentDirectory, Paths.LocalConfigFile)), true);
 
-        services.Configure<AppOptions>(config)
+        var pathProvider = new PathProvider();
+        
+        configBuilder
+            .SetBasePath(AppContext.BaseDirectory)
+            .SetFileProvider(fileProvider)
+            .AddJsonFile(pathProvider.GlobalConfigPath())
+            .AddJsonFile(pathProvider.RelativeLocalConfigPath, true);
+
+        services.Configure<AppOptions>(configBuilder.Build())
             .AddSingleton<IValidateOptions<AppOptions>, AppOptionValidation>()
-            .AddSingleton<IConfigurationManager>(config);
+            .AddSingleton<IPathProvider>(pathProvider);
         return services;
     }
 }

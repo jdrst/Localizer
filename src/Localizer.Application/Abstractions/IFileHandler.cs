@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Nodes;
 
-namespace Localizer.Core.Abstractions;
+namespace Localizer.Application.Abstractions;
 
 public interface IFileHandler
 {

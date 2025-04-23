@@ -1,6 +1,4 @@
-﻿using Localizer.Infrastructure.Provider.DeepL;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 
 namespace Localizer.Infrastructure.Configuration;
 

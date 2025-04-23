@@ -1,6 +1,6 @@
-﻿using Localizer.Core.Abstractions;
+﻿using Localizer.Application.Abstractions;
 
-namespace Localizer;
+namespace Localizer.Infrastructure;
 
 internal class AppInfo : IAppInfo
 {

@@ -7,14 +7,9 @@
     <ItemGroup>
         <PackageReference Include="Spectre.Console.Cli" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
-        <PackageReference Include="Nerdbank.GitVersioning">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-        </PackageReference>
     </ItemGroup>
     
     <ItemGroup>
-        <ProjectReference Include="..\Localizer.Core\Localizer.Core.csproj" />
         <ProjectReference Include="..\Localizer.Infrastructure\Localizer.Infrastructure.csproj" />
     </ItemGroup>
     
@@ -26,7 +21,7 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="appsettings.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 

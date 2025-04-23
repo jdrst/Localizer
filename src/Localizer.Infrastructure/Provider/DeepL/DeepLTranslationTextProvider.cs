@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using DeepL;
+using Localizer.Application.Abstractions;
 using Localizer.Core.Abstractions;
 using Localizer.Infrastructure.Logging;
 using Microsoft.Extensions.Logging;
@@ -15,7 +16,7 @@ public sealed class DeepLTranslationTextProvider : ITranslationTextProvider, IDi
     public bool UsesConsole() => false;
     
     private int _charactersBilled;
-    private readonly DeepLClient _client;
+    private readonly DeepLClient _client; //TODO: client from DI
     private readonly TextTranslateOptions _translateOptions;
     private readonly string? _sourceLanguage;
 
@@ -29,7 +30,7 @@ public sealed class DeepLTranslationTextProvider : ITranslationTextProvider, IDi
         
         _client = new DeepLClient(options.AuthKey, new DeepLClientOptions()
         {
-            appInfo = new AppInfo
+            appInfo = new global::DeepL.AppInfo
             {
                 AppName = appInfo.Name,
                 AppVersion = appInfo.Version

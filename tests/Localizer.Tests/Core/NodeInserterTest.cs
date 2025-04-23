@@ -6,7 +6,7 @@ using Localizer.Core;
 using Localizer.Infrastructure.Provider;
 using Shouldly;
 
-namespace Localizer.Tests;
+namespace Localizer.Tests.Core;
 
 public class NodeInserterTest
 {

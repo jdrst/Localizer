@@ -18,9 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="NetArchTest.eNhancedEdition" />
     <PackageReference Include="Shouldly" />
     <PackageReference Include="Verify.XunitV3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit.v3" />
     <PackageReference Include="xunit.runner.visualstudio" />
   </ItemGroup>
@@ -28,6 +29,15 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Localizer.Core\Localizer.Core.csproj" />
     <ProjectReference Include="..\..\src\Localizer.Infrastructure\Localizer.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Localizer.Application\Localizer.Application.csproj" />
+    <ProjectReference Include="..\..\src\Localizer\Localizer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Core\NodeInserterTest.TestComplex.verified.txt">
+      <ParentFile>NodeInserterTest</ParentFile>
+      <DependentUpon>NodeInserterTest.cs</DependentUpon>
+    </None>
   </ItemGroup>
 
 </Project>

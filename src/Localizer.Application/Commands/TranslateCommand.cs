@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel;
-using System.Globalization;
+using Localizer.Application.Abstractions;
 using Localizer.Core;
 using Localizer.Core.Abstractions;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
-namespace Localizer.Commands;
+namespace Localizer.Application.Commands;
 
 internal class TranslateCommand(IAnsiConsole console, IFileHandler fileHandler, ITranslationTextProvider translationTextProvider) : AsyncCommand<TranslateCommand.Settings>
 {

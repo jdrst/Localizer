@@ -1,4 +1,4 @@
-﻿namespace Localizer.Core.Abstractions;
+﻿namespace Localizer.Application.Abstractions;
 
 public interface IAppInfo
 {

@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <ProjectReference Include="..\Localizer.Core\Localizer.Core.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Spectre.Console.Cli" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    </ItemGroup>
+</Project>

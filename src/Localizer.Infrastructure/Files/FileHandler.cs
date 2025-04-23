@@ -3,8 +3,8 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Localizer.Core;
-using Localizer.Core.Abstractions;
+using Localizer.Application;
+using Localizer.Application.Abstractions;
 
 namespace Localizer.Infrastructure.Files;
 

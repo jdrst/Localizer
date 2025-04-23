@@ -9,8 +9,9 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
         <PackageReference Include="DeepL.net" />
     </ItemGroup>
-    
+
     <ItemGroup>
+      <ProjectReference Include="..\Localizer.Application\Localizer.Application.csproj" />
       <ProjectReference Include="..\Localizer.Core\Localizer.Core.csproj" />
     </ItemGroup>
 
