@@ -14,7 +14,7 @@ public class ReplaceMeTranslationTextProviderTest
         var input = "foo bar";
         var result = await provider.GetTranslationFor(input, new CultureInfo("en_US"), TestContext.Current.CancellationToken);
         
-        provider.UsesConsole().ShouldBeFalse();
+        provider.UsesConsole.ShouldBeFalse();
         result.ShouldBe($"{ReplaceMeTranslationTextProvider.ReplaceText} {input}");
     }
 }

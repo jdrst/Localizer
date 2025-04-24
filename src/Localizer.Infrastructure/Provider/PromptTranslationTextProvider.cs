@@ -1,5 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
+﻿using System.Globalization;
+using Localizer.Core;
 using Localizer.Core.Abstractions;
 using Spectre.Console;
 
@@ -7,8 +7,9 @@ namespace Localizer.Infrastructure.Provider;
 
 public class PromptTranslationTextProvider(IAnsiConsole console) : ITranslationTextProvider
 {
-    [SuppressMessage("Performance", "CA1822:Mark members as static")]
-    public bool UsesConsole() => true;
+    public IReadOnlyList<Message> Messages => [];
+
+    public bool UsesConsole => true;
 
     public Task<string> GetTranslationFor(string value, CultureInfo cultureInfo, CancellationToken ct = default)
     {

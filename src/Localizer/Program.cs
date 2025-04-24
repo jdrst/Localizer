@@ -1,6 +1,7 @@
 ﻿using Localizer;
 using Localizer.Application;
 using Localizer.Application.Abstractions;
+using Localizer.Application.Commands.Config.Helpers;
 using Localizer.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -16,10 +17,17 @@ app.Configure(cfg =>
     cfg.AddCommands()
         .SetExceptionHandler((ex, resolver) =>
         {
-            if (ex.InnerException is OptionsValidationException optEx)
-                AnsiConsole.WriteLine(optEx.Message);
-            else
-                AnsiConsole.WriteException(ex, ExceptionFormats.ShortenPaths);
+            if (ex.InnerException is OptionsValidationException)
+            {
+                AnsiConsole.Write(new Markup($"{ConsoleExtensions.ErrorMarkup}{ex.InnerException.Message}"));
+                return;
+            }
+            if (ex is CommandAppException)
+            {
+                AnsiConsole.Write(new Markup($"{ConsoleExtensions.ErrorMarkup}{ex.Message}"));
+                return;
+            }
+            AnsiConsole.WriteException(ex, ExceptionFormats.ShortenPaths);
         });
 });
 

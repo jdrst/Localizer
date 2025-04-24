@@ -18,7 +18,7 @@ public class PromptTranslationTextProviderTest
 
         var result = await provider.GetTranslationFor("foo bar", new CultureInfo("en_US"), TestContext.Current.CancellationToken);
         
-        provider.UsesConsole().ShouldBeTrue();
+        provider.UsesConsole.ShouldBeTrue();
         result.ShouldBe("bar foo");
         await Verify(console.Output);
     }

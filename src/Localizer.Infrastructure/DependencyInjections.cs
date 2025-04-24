@@ -4,7 +4,6 @@ using Localizer.Infrastructure.Files;
 using Localizer.Infrastructure.Provider.DeepL;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ConfigurationProvider = Localizer.Infrastructure.Configuration.ConfigurationProvider;
 
@@ -17,7 +16,6 @@ public static class DependencyInjections
         services
             .AddSingleton(TranslationTextProviderFactory.Create)
             .AddSingleton<IFileHandler, FileHandler>()
-            .AddLogging(builder => builder.AddConsole())
             .AddScoped<IConfigValueSetter, ConfigValueSetter>()
             .AddScoped<IConfigValueGetter, ConfigValueGetter>()
             .AddSingleton<IValidateOptions<AppOptions>, AppOptionValidation>()

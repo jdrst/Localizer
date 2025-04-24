@@ -25,7 +25,6 @@ internal static class TranslationTextProviderFactory
             TranslationTextProviderType.Prompt => new PromptTranslationTextProvider(
                 services.GetRequiredService<IAnsiConsole>()),
             TranslationTextProviderType.DeepL => new DeepLTranslationTextProvider(
-                services.GetRequiredService<ILogger<DeepLTranslationTextProvider>>(),
                 services.GetRequiredService<IOptions<DeepLOptions>>(), services.GetRequiredService<ITranslator>(),
                 services.GetRequiredService<IAppInfo>()),
             _ => throw new ArgumentOutOfRangeException(nameof(services))

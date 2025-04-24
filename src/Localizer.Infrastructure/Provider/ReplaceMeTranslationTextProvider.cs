@@ -1,14 +1,14 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
+﻿using System.Globalization;
+using Localizer.Core;
 using Localizer.Core.Abstractions;
 
 namespace Localizer.Infrastructure.Provider;
 
 internal class ReplaceMeTranslationTextProvider : ITranslationTextProvider
 {
+    public IReadOnlyList<Message> Messages => [];
     
-    [SuppressMessage("Performance", "CA1822:Mark members as static")]
-    public  bool UsesConsole() => false;
+    public  bool UsesConsole => false;
     
     public const string ReplaceText = "<<replaceme>>";
 

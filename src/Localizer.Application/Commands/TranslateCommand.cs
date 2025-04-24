@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using Localizer.Application.Abstractions;
+using Localizer.Application.Commands.Config.Helpers;
 using Localizer.Core;
 using Localizer.Core.Abstractions;
 using Spectre.Console;
@@ -38,7 +39,7 @@ internal class TranslateCommand(IAnsiConsole console, IFileHandler fileHandler, 
 
         var culturedJsons = fileHandler.CulturedJsons();
         
-        if (!translationTextProvider.UsesConsole())
+        if (!translationTextProvider.UsesConsole)
         {
             await console.Status().StartAsync("Translating...",async ctx =>
             {
@@ -55,8 +56,11 @@ internal class TranslateCommand(IAnsiConsole console, IFileHandler fileHandler, 
         else
             foreach (var to in culturedJsons)
                 await NodeInserter.InsertMissingNodes(baseObject, to.Json, translationTextProvider, to.CultureInfo);
-
+        
         await fileHandler.WriteFilesAsync(settings.Prefix);
+
+        foreach (var message in translationTextProvider.Messages)
+            console.WriteMessage(message);
         
         return 0;
     }

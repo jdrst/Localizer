@@ -1,0 +1,35 @@
+﻿{
+  Item1:
+Translating to English.
+[Info]: Characters billed this session: 36,
+  Item2:
+{
+  "TestKey": "Neutral",
+  "OnlyHere": "Nür hiär",
+  "Sub": {
+    "SubText": "Abc",
+    "SubText2": "Xyz"
+  },
+  "DoublyNested": {
+    "Something": "Something",
+    "Found": "found"
+  }
+},
+  Item3:
+{
+  "TestKey": "Neutral",
+  "OnlyHere": "foo bar",
+  "Sub": {
+    "SubText": "Abc",
+    "SubText2": "foo bar"
+  },
+  "NotInOther": "Foo",
+  "ObjectNotInOther": {
+    "SubValue": "value"
+  },
+  "DoublyNested": {
+    "Something": "foo bar",
+    "Found": "found"
+  }
+}
+}

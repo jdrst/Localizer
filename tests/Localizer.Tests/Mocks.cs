@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 using DeepL;
 using Localizer.Application.Abstractions;
 using Localizer.Infrastructure.Files;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 
@@ -13,9 +12,7 @@ namespace Localizer.Tests;
 public static class Mocks
 {
     internal static ITranslator TestDeepLClient() => Substitute.For<ITranslator>();
-
-    internal static ILogger<T> TestLogger<T>() => Substitute.For<ILogger<T>>();
-
+    
     internal static IOptions<T> TestOptions<T>() where T : class => Substitute.For<IOptions<T>>();
 
     internal sealed class TestAppInfo : IAppInfo

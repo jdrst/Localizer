@@ -1,9 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
+﻿using System.Globalization;
 using DeepL;
+using DeepL.Model;
 using Localizer.Application.Abstractions;
+using Localizer.Core;
 using Localizer.Core.Abstractions;
-using Localizer.Infrastructure.Logging;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -11,25 +11,33 @@ namespace Localizer.Infrastructure.Provider.DeepL;
 
 public sealed class DeepLTranslationTextProvider : ITranslationTextProvider, IDisposable
 {
-    private readonly ILogger<DeepLTranslationTextProvider> _logger;
-
-    [SuppressMessage("Performance", "CA1822:Mark members as static")]
-    public bool UsesConsole() => false;
+    private const string CharactersBilled = "Characters billed this session: ";
+    public IReadOnlyList<Message> Messages
+    {
+        get
+        {
+            //TODO: maybe not in the getter..
+            if (!_messages.Any(msg => msg.Text.StartsWith(CharactersBilled, StringComparison.InvariantCulture)))
+                    _messages.Add(Message.Info($"{CharactersBilled}{_charactersBilled}"));
+            return _messages;
+        }
+    }
+    public bool UsesConsole => false;
     
     private int _charactersBilled;
     private readonly ITranslator _client;
     private readonly TextTranslateOptions _translateOptions;
     private readonly string? _sourceLanguage;
+    private readonly List<Message> _messages = [];
 
 
-    public DeepLTranslationTextProvider(ILogger<DeepLTranslationTextProvider> logger, IOptions<DeepLOptions> options, ITranslator deepLClient, IAppInfo appInfo)
+    public DeepLTranslationTextProvider(IOptions<DeepLOptions> options, ITranslator deepLClient, IAppInfo appInfo)
     {
-        _logger = logger;
         ArgumentNullException.ThrowIfNull(options);
         ArgumentNullException.ThrowIfNull(appInfo);
 
         _client = deepLClient;
-        _sourceLanguage = options.Value?.SourceLanguage;
+        _sourceLanguage = string.IsNullOrWhiteSpace(options.Value?.SourceLanguage) ? null : options.Value.SourceLanguage;
         _translateOptions = new TextTranslateOptions
         {
             Context = $"We are translating a c# string that might be in composite format. {options.Value?.Context}"
@@ -39,11 +47,28 @@ public sealed class DeepLTranslationTextProvider : ITranslationTextProvider, IDi
     public async Task<string> GetTranslationFor(string value, CultureInfo cultureInfo, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(cultureInfo);
-        //TODO: errorhandling?
-        var result = await _client.TranslateTextAsync(value, _sourceLanguage, cultureInfo.Name,
-            _translateOptions, ct);
+        TextResult result;
+        try
+        {
+            result = await _client.TranslateTextAsync(value, _sourceLanguage, cultureInfo.Name,
+                _translateOptions, ct);
+        }
+        catch (DeepLException ex)
+        {
+            switch (ex)
+            {
+                case QuotaExceededException quotaExceededException:
+                case TooManyRequestsException tooManyRequestsException:
+                    _messages.Add(Message.Error($"DeepL API Exception: {ex.Message}{Environment.NewLine}" +
+                                                $"Inserting '{ReplaceMeTranslationTextProvider.ReplaceText}' instead of a translation."));
+                    return ReplaceMeTranslationTextProvider.ReplaceText;
+                default:
+                //this might throw. in that case we probably don't want to continue though, so that should be okay.
+                    throw;
+            }
+        }
+
         _charactersBilled += result.BilledCharacters;
-        _logger.DebugCharactersUsed(_charactersBilled);
         return result.Text;
     }
 

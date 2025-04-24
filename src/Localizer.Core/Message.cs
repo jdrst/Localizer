@@ -1,4 +1,4 @@
-﻿namespace Localizer.Application;
+﻿namespace Localizer.Core;
 
 public enum MessageType
 {
