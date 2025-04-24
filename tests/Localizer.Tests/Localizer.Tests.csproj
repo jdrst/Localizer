@@ -18,10 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.collector">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Microsoft.CodeCoverage" />
     <PackageReference Include="NetArchTest.eNhancedEdition" />
     <PackageReference Include="Shouldly" />
     <PackageReference Include="Spectre.Console.Testing" />
