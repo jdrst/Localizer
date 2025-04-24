@@ -6,14 +6,14 @@ namespace Localizer.Core.Extensions;
 
 internal static class JsonNodeExtensions
 {
-    internal static async Task<JsonNode> DeepCloneAndReplaceText(this JsonNode node, Func<string, CultureInfo, Task<string>> replacementTextFunc, CultureInfo cultureInfo) => 
-        await node.DeepClone().ReplaceTextWith(replacementTextFunc, cultureInfo);
+    internal static async Task<JsonNode> DeepCloneAndReplaceText(this JsonNode node, Func<string, CultureInfo, CancellationToken, Task<string>> replacementTextFunc, CultureInfo cultureInfo, CancellationToken ct = default) => 
+        await node.DeepClone().ReplaceTextWith(replacementTextFunc, cultureInfo, ct);
 
-    private static async Task<JsonNode> ReplaceTextWith(this JsonNode node, Func<string, CultureInfo, Task<string>> replacementTextFunc, CultureInfo cultureInfo)
+    private static async Task<JsonNode> ReplaceTextWith(this JsonNode node, Func<string, CultureInfo, CancellationToken, Task<string>> replacementTextFunc, CultureInfo cultureInfo, CancellationToken ct = default)
     {
         if (node.GetValueKind() is JsonValueKind.String)
         {
-            node = await replacementTextFunc(node.GetValue<string>(), cultureInfo);
+            node = await replacementTextFunc(node.GetValue<string>(), cultureInfo, ct);
             return node;
         }
 
@@ -21,7 +21,7 @@ internal static class JsonNodeExtensions
             throw new ArgumentOutOfRangeException(nameof(node));
         
         foreach (var (propName, child) in node.AsObject())
-            node[propName] = await child!.ReplaceTextWith(replacementTextFunc, cultureInfo);
+            node[propName] = await child!.ReplaceTextWith(replacementTextFunc, cultureInfo, ct);
 
         return node;
     }

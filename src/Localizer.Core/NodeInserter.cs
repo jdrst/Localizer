@@ -8,7 +8,7 @@ namespace Localizer.Core;
 
 public static class NodeInserter
 {
-    public static async Task InsertMissingNodes(JsonObject from, JsonObject to, ITranslationTextProvider translationTextProvider, CultureInfo cultureInfo)
+    public static async Task InsertMissingNodes(JsonObject from, JsonObject to, ITranslationTextProvider translationTextProvider, CultureInfo cultureInfo, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(translationTextProvider);
         ArgumentNullException.ThrowIfNull(from);
@@ -21,7 +21,7 @@ public static class NodeInserter
             {
                     to.Insert(from.IndexOf(propName), propName,
                         await fromChild!.DeepCloneAndReplaceText(translationTextProvider.GetTranslationFor,
-                            cultureInfo));
+                            cultureInfo, ct));
                 continue;
             }
 
@@ -37,7 +37,7 @@ public static class NodeInserter
 
             if (childKind is JsonValueKind.Object && otherKind is JsonValueKind.Object)
             {
-                await InsertMissingNodes(fromChild.AsObject(), toChild.AsObject(), translationTextProvider, cultureInfo);
+                await InsertMissingNodes(fromChild.AsObject(), toChild.AsObject(), translationTextProvider, cultureInfo, ct);
                 continue;
             }
 
@@ -48,7 +48,7 @@ public static class NodeInserter
             to.Remove(propName);
             to.Insert(from.IndexOf(propName), propName,
                 await fromChild.DeepCloneAndReplaceText(translationTextProvider.GetTranslationFor,
-                    cultureInfo));
+                    cultureInfo, ct));
         }
     }
 }

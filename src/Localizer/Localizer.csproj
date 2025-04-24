@@ -1,9 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
         <OutputType>Exe</OutputType>
+        <Authors>jdrst</Authors>
+        <Copyright>Copyright © $(Authors) $([System.DateTime]::Now.Year)</Copyright>
+        <Description>Command line tool to to translate and/or match kli.Localize localization files</Description>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageTags>i18n;internationalization;kli.Localize;localization</PackageTags>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/jdrst/Localizer.git</RepositoryUrl>
+        <RepositoryBranch>main</RepositoryBranch>
+        <RepositoryCommit>$(GitCommitId)</RepositoryCommit>
+        <PackAsTool>true</PackAsTool>
+        <PackageIcon>icon.png</PackageIcon>
     </PropertyGroup>
 
+    <ItemGroup>
+        <None Include="../../LICENSE" Pack="true" PackagePath="\"/>
+        <None Include="../../README.md" Pack="true" PackagePath="\"/>
+        <None Include="../../icon.png" Pack="true" PackagePath="\"/>
+        <None Update="appsettings.json" CopyToOutputDirectory="Always" Pack="true" PackagePath="\"/>
+        <None Update="locale.json" CopyToOutputDirectory="PreserveNewest" />
+        <None Update="locale_en.json" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+    
     <ItemGroup>
         <PackageReference Include="Spectre.Console.Cli" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
@@ -12,17 +32,4 @@
     <ItemGroup>
         <ProjectReference Include="..\Localizer.Infrastructure\Localizer.Infrastructure.csproj" />
     </ItemGroup>
-    
-    <ItemGroup>
-      <None Update="locale.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="locale_en.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="appsettings.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
 </Project>

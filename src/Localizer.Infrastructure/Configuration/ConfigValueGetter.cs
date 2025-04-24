@@ -28,7 +28,7 @@ public class ConfigValueGetter(IPathProvider pathProvider) : IConfigValueGetter
         return (globalValue, localValue);
     }
 
-    public async Task<(IDictionary<string, string>, IDictionary<string, string>)> ListValuesAsync()
+    public async Task<(IDictionary<string, string> globalValues, IDictionary<string, string> localValues)> ListValuesAsync()
     {
         var globalOptions = await JsonHelper.GetOptionsFrom(pathProvider.GlobalConfigPath()); 
         var localOptions = await JsonHelper.GetOptionsFrom(pathProvider.LocalConfigPath());

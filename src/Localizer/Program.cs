@@ -11,7 +11,8 @@ var services = new ServiceCollection();
 services
     .AddApplication()
     .AddInfrastructure()
-    .AddConfiguration();
+    .AddConfiguration()
+    .AddSingleton<IAppInfo, AppInfo>();
 
 var registrar = new TypeRegistrar(services);
 

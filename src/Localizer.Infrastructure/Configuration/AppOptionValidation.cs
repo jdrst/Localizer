@@ -11,7 +11,7 @@ public class AppOptionValidation : IValidateOptions<AppOptions>
 
         if (options is null)
         {
-            return ValidateOptionsResult.Fail("no configuration found");
+            return ValidateOptionsResult.Fail("No configuration found.");
         }
 
         if (options.TranslationTextProviderType is TranslationTextProviderType.DeepL)

@@ -16,6 +16,6 @@
     </ItemGroup>
     
     <ItemGroup>
-        <InternalsVisibleTo Include="Localizer.Tests" />
+        <InternalsVisibleTo Include="Localizer.Tests;DynamicProxyGenAssembly2" />
     </ItemGroup>
 </Project>

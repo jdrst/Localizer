@@ -6,7 +6,7 @@ namespace Localizer.Infrastructure.Configuration;
 
 public class ConfigValueSetter(IPathProvider pathProvider) : IConfigValueSetter
 {
-    public async Task SetValueAsync(string key, string value, bool isGlobal = true)
+    public async Task SetValueAsync(string key, string? value, bool isGlobal = true)
     {
         ArgumentNullException.ThrowIfNull(key, nameof(key));
         
@@ -26,7 +26,10 @@ public class ConfigValueSetter(IPathProvider pathProvider) : IConfigValueSetter
                 node = node[part]!;
             }
         }
-        node[parts.Last()] = value;
+        if (value is not null)
+            node[parts.Last()] = value;
+        else 
+            node.AsObject().Remove(parts.Last());
 
         await JsonHelper.WriteAsync(config, path);
     }

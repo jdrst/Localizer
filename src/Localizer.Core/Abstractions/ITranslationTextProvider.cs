@@ -5,5 +5,5 @@ namespace Localizer.Core.Abstractions;
 public interface ITranslationTextProvider
 {
     public bool UsesConsole();
-    public Task<string> GetTranslationFor(string value, CultureInfo cultureInfo);
+    public Task<string> GetTranslationFor(string value, CultureInfo cultureInfo, CancellationToken ct = default);
 }

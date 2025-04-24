@@ -1,0 +1,9 @@
+﻿{
+  "TranslationTextProviderType": "DeepL",
+  "DeepL": {
+    "AuthKey": "globalKey",
+    "Context": "some text",
+    "SourceLanguage": "fr"
+  },
+  "unknown": "weird that i can do this"
+}

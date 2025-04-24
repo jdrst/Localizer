@@ -1,0 +1,13 @@
+﻿{
+  Item1: {
+    DeepL:AuthKey: globalKey,
+    DeepL:Context: some text,
+    DeepL:SourceLanguage: fr,
+    TranslationTextProviderType: DeepL
+  },
+  Item2: {
+    DeepL:AuthKey: localKey,
+    DeepL:SourceLanguage: en_us,
+    TranslationTextProviderType: Prompt
+  }
+}

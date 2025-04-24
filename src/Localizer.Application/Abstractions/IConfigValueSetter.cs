@@ -2,5 +2,5 @@
 
 public interface IConfigValueSetter
 {
-    public Task SetValueAsync(string key, string value, bool isGlobal = true);
+    public Task SetValueAsync(string key, string? value, bool isGlobal = true);
 }

@@ -4,8 +4,8 @@ namespace Localizer.Infrastructure.Files;
 
 internal class PathProvider : IPathProvider
 {
-    private const string AppSettingsFile = "appsettings.json";
-    private const string LocalConfigFile = ".localizer";
+    internal const string AppSettingsFile = "appsettings.json";
+    internal const string LocalConfigFile = ".localizer";
     
     private readonly string _localConfigPath = Path.Join(Environment.CurrentDirectory, LocalConfigFile);
     private readonly string _globalConfigPath = Path.Join(AppContext.BaseDirectory, AppSettingsFile);

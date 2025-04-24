@@ -19,9 +19,9 @@ internal class SetCommand(IAnsiConsole console, IConfigValueSetter configValueSe
         [CommandArgument(0, "[config key]")] 
         public string Key { get; set; } = string.Empty;
         
-        [Description("Config value the key should be set to.")]
+        [Description("Config value the key should be set to. Leave empty to unset.")]
         [CommandArgument(1, "[config value]")] 
-        public string Value { get; set; } = string.Empty;
+        public string? Value { get; set; } = string.Empty;
         
         [Description("Set global or local config")] 
         [CommandOption("-g|--global")]

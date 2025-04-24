@@ -4,7 +4,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Localizer.Tests</RootNamespace>
     <TargetFramework>net9.0</TargetFramework>
     <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
   </PropertyGroup>
@@ -18,9 +17,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="coverlet.collector">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="NetArchTest.eNhancedEdition" />
     <PackageReference Include="Shouldly" />
+    <PackageReference Include="Spectre.Console.Testing" />
     <PackageReference Include="Verify.XunitV3" />
+    <PackageReference Include="NSubstitute" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit.v3" />
     <PackageReference Include="xunit.runner.visualstudio" />
@@ -32,12 +37,5 @@
     <ProjectReference Include="..\..\src\Localizer.Application\Localizer.Application.csproj" />
     <ProjectReference Include="..\..\src\Localizer\Localizer.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Core\NodeInserterTest.TestComplex.verified.txt">
-      <ParentFile>NodeInserterTest</ParentFile>
-      <DependentUpon>NodeInserterTest.cs</DependentUpon>
-    </None>
-  </ItemGroup>
-
+    
 </Project>
