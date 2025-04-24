@@ -2,6 +2,8 @@
 
 public interface IPathProvider
 {
-    public string LocalConfigPath();
-    public string GlobalConfigPath();
+    public string Root { get; }
+    public string LocalConfigPath { get; }
+    public string GlobalConfigPath { get; }
+    public string RelativeLocalConfigPath { get; }
 }

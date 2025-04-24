@@ -1,0 +1,21 @@
+﻿{
+  Item1: Set DeepL:Context to 'foo' (local),
+  Item2:
+{
+  "TranslationProvider": "DeepL",
+  "DeepL": {
+    "AuthKey": "globalKey",
+    "Context": "some text",
+    "SourceLanguage": "fr"
+  }
+},
+  Item3:
+{
+  "TranslationProvider": "ReplaceMe",
+  "DeepL": {
+    "AuthKey": "localKey",
+    "SourceLanguage": "en_us",
+    "Context": "foo"
+  }
+}
+}

@@ -1,7 +1,4 @@
 ﻿using System.Globalization;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Text.Json;
 using System.Text.Json.Nodes;
 using Localizer.Application;
 using Localizer.Application.Abstractions;
@@ -13,12 +10,6 @@ public class FileHandler : IFileHandler
     private JsonObject _base = null!;
     private CulturedJson[] _culturedJsons = [];
     private readonly List<Message> _messages = [];
-    
-    private readonly JsonSerializerOptions _jsonSerializerOptions = new()
-    {
-        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-        WriteIndented = true
-    };
     
     public CulturedJson[] CulturedJsons() => _culturedJsons;
 
@@ -36,7 +27,7 @@ public class FileHandler : IFileHandler
             return false;
         }
         
-        _base = await ReadFileAsync(baseFilePath);
+        _base = (await JsonHelper.LoadAsync(baseFilePath))!.AsObject();
         var searchPattern = $"{baseFileName}_*.json";
         var files = Directory.GetFiles(workingDir, searchPattern);
 
@@ -53,7 +44,7 @@ public class FileHandler : IFileHandler
             var cultureString = Path.GetFileNameWithoutExtension(filePath).Split("_").Skip(1).LastOrDefault();
             var cultureInfo = cultureString == null ? CultureInfo.InvariantCulture : new CultureInfo(cultureString);
 
-            var node = await ReadFileAsync(filePath);
+            var node = (await JsonHelper.LoadAsync(filePath))!.AsObject();
             culturedJsons[idx] = new CulturedJson(filePath, node, cultureInfo);
         }
 
@@ -66,21 +57,12 @@ public class FileHandler : IFileHandler
         foreach (var (path, json, _) in _culturedJsons)
             await WriteFileAsync(path, prefix, json);
     }
-
-    private static async Task<JsonObject> ReadFileAsync(string path)
+    private static async Task WriteFileAsync(string path, string? prefix, JsonObject node)
     {
-        var fileText = await File.ReadAllTextAsync(path, Encoding.UTF8);
-        return JsonNode.Parse(fileText)!.Root.AsObject();
-    }
-
-    private async Task WriteFileAsync(string path, string? prefix, JsonObject jsonObject)
-    {
-        string serializedJson = jsonObject.ToJsonString(_jsonSerializerOptions);
-
         var outPath = string.IsNullOrWhiteSpace(prefix)
             ? path
             : $"{prefix}_{Path.GetFileNameWithoutExtension(path)}.json";
-            
-        await File.WriteAllTextAsync(outPath, serializedJson);
+        
+        await node.WriteAsync(outPath);
     }
 }

@@ -1,6 +1,4 @@
-﻿using Shouldly;
-
-namespace Localizer.Tests.Architecture;
+﻿namespace Localizer.Tests.Architecture;
 
 public class ArchitectureTest
 {
@@ -29,7 +27,7 @@ public class ArchitectureTest
     {
         var types = Types.In(ProjectNames.Core)
             .ShouldNot()
-            .HaveDependencyOtherThan("System", "Localizer.Core");
+            .HaveDependencyOtherThan("System", $"{nameof(Localizer)}.{nameof(Core)}");
         
         types.AssertSuccess(ProjectNames.Core);
     }

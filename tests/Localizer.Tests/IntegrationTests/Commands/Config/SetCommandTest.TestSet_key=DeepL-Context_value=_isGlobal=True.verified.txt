@@ -1,0 +1,19 @@
+﻿{
+  Item1: Unset DeepL:Context (global),
+  Item2:
+{
+  "TranslationProvider": "DeepL",
+  "DeepL": {
+    "AuthKey": "globalKey",
+    "SourceLanguage": "fr"
+  }
+},
+  Item3:
+{
+  "TranslationProvider": "ReplaceMe",
+  "DeepL": {
+    "AuthKey": "localKey",
+    "SourceLanguage": "en_us"
+  }
+}
+}

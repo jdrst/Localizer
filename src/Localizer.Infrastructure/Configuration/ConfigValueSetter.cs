@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using System.Text.Json.Nodes;
+﻿using System.Text.Json.Nodes;
 using Localizer.Application.Abstractions;
 
 namespace Localizer.Infrastructure.Configuration;
@@ -10,7 +9,7 @@ public class ConfigValueSetter(IPathProvider pathProvider) : IConfigValueSetter
     {
         ArgumentNullException.ThrowIfNull(key, nameof(key));
         
-        var path = isGlobal ? pathProvider.GlobalConfigPath() : pathProvider.LocalConfigPath();
+        var path = isGlobal ? pathProvider.GlobalConfigPath : pathProvider.LocalConfigPath;
         
         var config = await JsonHelper.LoadAsync(path) ?? new JsonObject();
 
@@ -21,16 +20,15 @@ public class ConfigValueSetter(IPathProvider pathProvider) : IConfigValueSetter
         {
             foreach (var part in parts[..^1])
             {
-                if (node[part] is null)
-                    node[part] = new JsonObject();
+                node[part] ??= new JsonObject();
                 node = node[part]!;
             }
         }
-        if (value is not null)
+        if (!string.IsNullOrWhiteSpace(value))
             node[parts.Last()] = value;
         else 
             node.AsObject().Remove(parts.Last());
 
-        await JsonHelper.WriteAsync(config, path);
+        await config.WriteAsync(path);
     }
 }

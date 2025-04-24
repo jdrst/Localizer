@@ -1,0 +1,16 @@
+﻿{
+  "TestKey": "Neutral",
+  "OnlyHere": "<<replaceme>> Nür hiär",
+  "Sub": {
+    "SubText": "Abc",
+    "SubText2": "<<replaceme>> Xyz"
+  },
+  "NotInOther": "Foo",
+  "ObjectNotInOther": {
+    "SubValue": "value"
+  },
+  "DoublyNested": {
+    "Something": "<<replaceme>> Something",
+    "Found": "found"
+  }
+}

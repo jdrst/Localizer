@@ -1,0 +1,20 @@
+﻿{
+  Item1: Set DeepL:Context to 'bar' (global),
+  Item2:
+{
+  "TranslationProvider": "DeepL",
+  "DeepL": {
+    "AuthKey": "globalKey",
+    "Context": "bar",
+    "SourceLanguage": "fr"
+  }
+},
+  Item3:
+{
+  "TranslationProvider": "ReplaceMe",
+  "DeepL": {
+    "AuthKey": "localKey",
+    "SourceLanguage": "en_us"
+  }
+}
+}

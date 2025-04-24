@@ -1,0 +1,7 @@
+﻿{
+  "TranslationProvider": "DeepL",
+  "DeepL": {
+    "AuthKey": "globalKey",
+    "Context": "some text"
+  }
+}

@@ -2,6 +2,6 @@
 
 public interface IAppInfo
 {
-    public string Name();
-    public string Version();
+    public string Name { get; }
+    public string Version { get; }
 }

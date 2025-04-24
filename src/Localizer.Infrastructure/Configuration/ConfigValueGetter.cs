@@ -8,8 +8,8 @@ public class ConfigValueGetter(IPathProvider pathProvider) : IConfigValueGetter
     {
         ArgumentNullException.ThrowIfNull(key, nameof(key));
         
-        var globalOptions = await JsonHelper.LoadAsync(pathProvider.GlobalConfigPath());
-        var localOptions = await JsonHelper.LoadAsync(pathProvider.LocalConfigPath());
+        var globalOptions = await JsonHelper.LoadAsync(pathProvider.GlobalConfigPath);
+        var localOptions = await JsonHelper.LoadAsync(pathProvider.LocalConfigPath);
 
         var parts = key.Split(':');
 
@@ -30,8 +30,8 @@ public class ConfigValueGetter(IPathProvider pathProvider) : IConfigValueGetter
 
     public async Task<(IDictionary<string, string> globalValues, IDictionary<string, string> localValues)> ListValuesAsync()
     {
-        var globalOptions = await JsonHelper.GetOptionsFrom(pathProvider.GlobalConfigPath()); 
-        var localOptions = await JsonHelper.GetOptionsFrom(pathProvider.LocalConfigPath());
+        var globalOptions = await JsonHelper.GetOptionsFrom(pathProvider.GlobalConfigPath); 
+        var localOptions = await JsonHelper.GetOptionsFrom(pathProvider.LocalConfigPath);
         return (globalOptions, localOptions);
     }
 }

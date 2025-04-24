@@ -1,0 +1,6 @@
+﻿|                      | Global    | Local     |
+| -------------------- | --------- | --------- |
+| TranslationProvider  | DeepL     | ReplaceMe |
+| DeepL:AuthKey        | globalKey | localKey  |
+| DeepL:Context        | some text |           |
+| DeepL:SourceLanguage | fr        | en_us     |

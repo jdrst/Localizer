@@ -1,0 +1,3 @@
+﻿|               | Global    | Local |
+| ------------- | --------- | ----- |
+| DeepL:Context | some text |       |

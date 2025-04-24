@@ -14,13 +14,9 @@ internal class TranslateCommand(IAnsiConsole console, IFileHandler fileHandler, 
     public const string Example = "translate locale.json";
     internal class Settings : CommandSettings
     {
-        [Description("Base file that is used by 'kli.Localize'")]
+        [Description("Base file that is used by 'kli.Localize'. Relative to the current directory.")]
         [CommandArgument(0, "[base file]")]
         public string BaseFilePath { get; set; } = string.Empty;
-        
-        // [Description("Prompt for translations")]
-        // [CommandOption("-i|--interactive")]
-        // public bool Prompt { get; set; }
         
         [Description("Prefix for the resulting files. If not specified files will be changed in place.")]
         [CommandOption("-p|--prefix")]

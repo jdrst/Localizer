@@ -1,20 +1,14 @@
 ﻿using Localizer;
 using Localizer.Application;
 using Localizer.Application.Abstractions;
-using Localizer.Core.Abstractions;
 using Localizer.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
-var services = new ServiceCollection();
-services
-    .AddApplication()
-    .AddInfrastructure()
-    .AddConfiguration()
-    .AddSingleton<IAppInfo, AppInfo>();
 
-var registrar = new TypeRegistrar(services);
+var registrar = new TypeRegistrar(Services.Create());
 
 var app = new CommandApp(registrar);
 app.Configure(cfg =>
@@ -22,8 +16,24 @@ app.Configure(cfg =>
     cfg.AddCommands()
         .SetExceptionHandler((ex, resolver) =>
         {
-            AnsiConsole.WriteException(ex, ExceptionFormats.ShortenPaths);
+            if (ex.InnerException is OptionsValidationException optEx)
+                AnsiConsole.WriteLine(optEx.Message);
+            else
+                AnsiConsole.WriteException(ex, ExceptionFormats.ShortenPaths);
         });
 });
 
 await app.RunAsync(args);
+
+internal static class Services
+{
+    public static IServiceCollection Create()
+    {
+        var services = new ServiceCollection();
+        services
+            .AddApplication()
+            .AddInfrastructure()
+            .AddSingleton<IAppInfo, AppInfo>();
+        return services;
+    }
+}

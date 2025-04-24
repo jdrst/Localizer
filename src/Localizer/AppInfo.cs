@@ -4,6 +4,6 @@ namespace Localizer;
 
 internal class AppInfo : IAppInfo
 {
-    public string Name() => ThisAssembly.AssemblyName;
-    public string Version() => ThisAssembly.AssemblyInformationalVersion;
+    public string Name => ThisAssembly.AssemblyName;
+    public string Version => ThisAssembly.AssemblyInformationalVersion;
 }

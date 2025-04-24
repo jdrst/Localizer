@@ -1,0 +1,7 @@
+﻿{
+  "TranslationProvider": "Prompt",
+  "DeepL": {
+    "AuthKey": "localKey",
+    "SourceLanguage": "en_us"
+  }
+}

@@ -1,6 +1,4 @@
-﻿using Localizer.Infrastructure.Provider.DeepL;
-
-namespace Localizer.Infrastructure.Configuration;
+﻿namespace Localizer.Infrastructure.Configuration;
 
 public enum TranslationTextProviderType
 {
@@ -10,8 +8,6 @@ public enum TranslationTextProviderType
 }
 public class AppOptions
 {
-    public TranslationTextProviderType TranslationTextProviderType { get; set; } =
+    public TranslationTextProviderType TranslationProvider { get; set; } =
         TranslationTextProviderType.ReplaceMe;
-
-    public DeepLOptions? DeepL { get; set; }
 }

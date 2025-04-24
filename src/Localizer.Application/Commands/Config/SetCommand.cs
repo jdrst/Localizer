@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
-using System.Text.Json;
-using System.Text.Json.Nodes;
+using System.Text;
 using Localizer.Application.Abstractions;
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -31,7 +30,14 @@ internal class SetCommand(IAnsiConsole console, IConfigValueSetter configValueSe
     public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
     {
         await configValueSetter.SetValueAsync(settings.Key, settings.Value, settings.Global);
-        console.WriteLine($"Set {settings.Key} to '{settings.Value}'" );
+
+        var sb = new StringBuilder();
+        sb.Append(string.IsNullOrWhiteSpace(settings.Value)
+            ? $"Unset {settings.Key}"
+            : $"Set {settings.Key} to '{settings.Value}'");
+        sb.Append(settings.Global ? " (global)" : " (local)");
+        
+        console.WriteLine(sb.ToString());
         return 0;
     }
 }

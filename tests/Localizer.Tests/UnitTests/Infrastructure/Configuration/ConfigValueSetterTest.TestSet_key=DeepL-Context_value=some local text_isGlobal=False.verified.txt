@@ -1,0 +1,8 @@
+﻿{
+  "TranslationProvider": "ReplaceMe",
+  "DeepL": {
+    "AuthKey": "localKey",
+    "SourceLanguage": "en_us",
+    "Context": "some local text"
+  }
+}
