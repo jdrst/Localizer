@@ -19,6 +19,9 @@ public static class DependencyInjections
     {
         ArgumentNullException.ThrowIfNull(cfg);
         
+        cfg.AddCommand<VersionCommand>(VersionCommand.Name)
+            .WithDescription(VersionCommand.Description)
+            .WithExample(VersionCommand.Example);
         cfg.AddCommand<TranslateCommand>(TranslateCommand.Name)
             .WithDescription(TranslateCommand.Description)
             .WithExample(TranslateCommand.Example);

@@ -1,5 +1,9 @@
 ﻿{
   Item1:
+Please provide missing translation for 'Nür hiär' in culture: 'en'. foo
+Please provide missing translation for 'Xyz' in culture: 'en'. bar
+Please provide missing translation for 'Something' in culture: 'en'. baz,
+  Item2:
 {
   "TestKey": "Neutral",
   "OnlyHere": "Nür hiär",
@@ -12,15 +16,15 @@
     }
   }
 },
-  Item2:
+  Item3:
 {
   "TestKey": "Neutral",
-  "OnlyHere": "<<replaceme>> Nür hiär",
+  "OnlyHere": "foo",
   "Sub": {
     "SubText": "Abc",
-    "SubText2": "<<replaceme>> Xyz",
+    "SubText2": "bar",
     "DoublyNested": {
-      "Something": "<<replaceme>> Something",
+      "Something": "baz",
       "Found": "found"
     }
   },

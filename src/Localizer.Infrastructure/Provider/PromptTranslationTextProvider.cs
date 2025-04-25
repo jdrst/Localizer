@@ -5,16 +5,22 @@ using Spectre.Console;
 
 namespace Localizer.Infrastructure.Provider;
 
-public class PromptTranslationTextProvider(IAnsiConsole console) : ITranslationTextProvider
+internal class PromptTranslationTextProvider(IAnsiConsole console) : ITranslationTextProvider
 {
     public IReadOnlyList<Message> Messages => [];
-
     public bool UsesConsole => true;
 
-    public Task<string> GetTranslationFor(string value, CultureInfo cultureInfo, CancellationToken ct = default)
+    public Task<string[]> GetTranslationsAsync(string[] texts, CultureInfo cultureInfo, CancellationToken ct = default)
     {
-        return Task.FromResult(console.Prompt(
-            new TextPrompt<string>($"Please provide missing translation for '[bold]{value}[/]' in culture: '{(string.IsNullOrWhiteSpace(cultureInfo?.Name) ? "invariant" : cultureInfo.Name)}'.")
-        ));
+        ArgumentNullException.ThrowIfNull(texts);
+        
+        var results = new string[texts.Length];
+        foreach (var (idx, value) in texts.Index())
+            results[idx] = console.Prompt(
+                new TextPrompt<string>(
+                    $"Please provide missing translation for '[bold]{value}[/]' in culture: '{(string.IsNullOrWhiteSpace(cultureInfo.Name) ? "invariant" : cultureInfo.Name)}'.")
+            );
+
+        return Task.FromResult(results);
     }
 }

@@ -11,26 +11,27 @@ namespace Localizer.Tests.UnitTests.Infrastructure.Provider;
 public class DeepLTranslationTextProviderTest
 {
      [Fact]
-     public async Task TestGetTranslationFor()
+     public async Task TestGetTranslationsAsync()
      {
          var deepLClient = Mocks.TestDeepLClient();
          deepLClient.TranslateTextAsync(
-                 Arg.Any<string>(), 
+                 Arg.Any<string[]>(), 
                  Arg.Any<string>(), 
                  Arg.Any<string?>()!,
                  Arg.Any<TextTranslateOptions>(), 
                  TestContext.Current.CancellationToken)
-             .Returns(new TextResult("foo bar", "de", 12, "modelType"));
+             .Returns([new TextResult("foo bar", "de", 12, "modelType")]);
          var options = Mocks.TestOptions<DeepLOptions>();
-         using var provider = new DeepLTranslationTextProvider(options, deepLClient, new Mocks.TestAppInfo());
+         var provider = new DeepLTranslationTextProvider(options, deepLClient, new AppInfo());
      
          var input = "bar foo";
-         var result = await provider.GetTranslationFor(input, new CultureInfo("en_US"), TestContext.Current.CancellationToken);
+         var result = await provider.GetTranslationsAsync([input], new CultureInfo("en-US"), TestContext.Current.CancellationToken);
          
          provider.UsesConsole.ShouldBeFalse();
          provider.Messages.ShouldHaveSingleItem();
          provider.Messages[0].MessageType.ShouldBe(MessageType.Info);
          provider.Messages[0].Text.ShouldEndWith("12");
-         result.ShouldBe($"foo bar");
+         result.ShouldHaveSingleItem();
+         result[0].ShouldBe($"foo bar");
      }
 }

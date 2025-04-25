@@ -1,27 +1,26 @@
-﻿using System.Globalization;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Nodes;
-using Localizer.Core.Abstractions;
-using Localizer.Core.Extensions;
 
 namespace Localizer.Core;
 
 public static class NodeInserter
 {
-    public static async Task InsertMissingNodes(JsonObject from, JsonObject to, ITranslationTextProvider translationTextProvider, CultureInfo cultureInfo, CancellationToken ct = default)
+    public static (List<JsonNode> InsertedNodes, IReadOnlyList<Message> Messages) InsertMissingNodes(JsonObject from, JsonObject to)
     {
-        ArgumentNullException.ThrowIfNull(translationTextProvider);
         ArgumentNullException.ThrowIfNull(from);
         ArgumentNullException.ThrowIfNull(to);
+        
+        var nodes = new List<JsonNode>();
+        var messages = new List<Message>();
         
         foreach (var (propName, fromChild) in from)
         {
             var toChild = to[propName];
             if (toChild is null)
             {
-                    to.Insert(from.IndexOf(propName), propName,
-                        await fromChild!.DeepCloneAndReplaceText(translationTextProvider.GetTranslationFor,
-                            cultureInfo, ct));
+                var insertedNode = fromChild!.DeepClone();
+                to.Insert(from.IndexOf(propName), propName, insertedNode);
+                nodes.Add(insertedNode);
                 continue;
             }
 
@@ -37,18 +36,22 @@ public static class NodeInserter
 
             if (childKind is JsonValueKind.Object && otherKind is JsonValueKind.Object)
             {
-                await InsertMissingNodes(fromChild.AsObject(), toChild.AsObject(), translationTextProvider, cultureInfo, ct);
+                var (foo, bar) = InsertMissingNodes(fromChild.AsObject(), toChild.AsObject());
+                nodes.AddRange(foo);
+                messages.AddRange(bar);
                 continue;
             }
 
 
             // we are dropping information here but if there's nodes with the same propertyName and different valueKinds we have to die one death.
             // from is the winner in this case
-            // TODO: log this as warning!
+            messages.Add(Message.Info($"Found nodes with the same property name but different kinds. Overriding with the node from the base file."));
             to.Remove(propName);
-            to.Insert(from.IndexOf(propName), propName,
-                await fromChild.DeepCloneAndReplaceText(translationTextProvider.GetTranslationFor,
-                    cultureInfo, ct));
+            var newNode = fromChild.DeepClone();
+            to.Insert(from.IndexOf(propName), propName, newNode);
+            nodes.Add(newNode);
         }
+
+        return (nodes, messages);
     }
 }

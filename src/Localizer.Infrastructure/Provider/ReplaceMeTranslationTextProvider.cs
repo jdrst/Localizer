@@ -6,11 +6,15 @@ namespace Localizer.Infrastructure.Provider;
 
 internal class ReplaceMeTranslationTextProvider : ITranslationTextProvider
 {
-    public IReadOnlyList<Message> Messages => [];
-    
-    public  bool UsesConsole => false;
-    
     public const string ReplaceText = "<<replaceme>>";
+    public IReadOnlyList<Message> Messages => [];
+    public bool UsesConsole => false;
+    public Task<string[]> GetTranslationsAsync(string[] texts, CultureInfo cultureInfo, CancellationToken ct = default)
+    {
+        var results = new string[texts.Length];
+        foreach (var (idx, value) in texts.Index())
+            results[idx] = $"<<replaceme>> {value}";
 
-    public Task<string> GetTranslationFor(string value, CultureInfo cultureInfo, CancellationToken ct = default) => Task.FromResult($"<<replaceme>> {value}");
+        return Task.FromResult(results);
+    }
 }

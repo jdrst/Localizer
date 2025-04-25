@@ -1,6 +1,8 @@
 ﻿{
   Item1:
-Translating to English.
+Translating to Uzbek (Latin, Uzbekistan).
+[Info]: DeepL can't translate to EN, using EN-US instead
+[Error]: DeepL can't translate to uz-Latn-UZ. Inserting '<<replaceme>>' instead of a translation.
 [Info]: Characters billed this session: 36,
   Item2:
 {
@@ -8,11 +10,11 @@ Translating to English.
   "OnlyHere": "Nür hiär",
   "Sub": {
     "SubText": "Abc",
-    "SubText2": "Xyz"
-  },
-  "DoublyNested": {
-    "Something": "Something",
-    "Found": "found"
+    "SubText2": "Xyz",
+    "DoublyNested": {
+      "Something": "Something",
+      "Found": "found"
+    }
   }
 },
   Item3:
@@ -21,15 +23,28 @@ Translating to English.
   "OnlyHere": "foo bar",
   "Sub": {
     "SubText": "Abc",
-    "SubText2": "foo bar"
+    "SubText2": "foo bar",
+    "DoublyNested": {
+      "Something": "foo bar",
+      "Found": "found"
+    }
   },
   "NotInOther": "Foo",
   "ObjectNotInOther": {
     "SubValue": "value"
-  },
-  "DoublyNested": {
-    "Something": "foo bar",
-    "Found": "found"
+  }
+},
+  Item4:
+{
+  "TestKey": "<<replaceme>> Neutral",
+  "OnlyHere": "<<replaceme>> Nür hiär",
+  "Sub": {
+    "SubText": "<<replaceme>> Abc",
+    "SubText2": "<<replaceme>> Xyz",
+    "DoublyNested": {
+      "Something": "<<replaceme>> Something",
+      "Found": "<<replaceme>> found"
+    }
   }
 }
 }

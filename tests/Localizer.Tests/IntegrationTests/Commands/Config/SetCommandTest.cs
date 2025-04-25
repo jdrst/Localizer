@@ -21,6 +21,6 @@ public class SetCommandTest : IntegrationTest
         var result = await app.RunAsync(args.ToArray());
         
         result.ExitCode.ShouldBe(0);
-        await Verify((result.Output, await File.ReadAllTextAsync(TestPathProvider!.GlobalConfigPath, TestContext.Current.CancellationToken), await File.ReadAllTextAsync(TestPathProvider.LocalConfigPath, TestContext.Current.CancellationToken)));
+        await Verify((result.Output, await File.ReadAllTextAsync(TestPathProvider!.GlobalConfigFilePath, TestContext.Current.CancellationToken), await File.ReadAllTextAsync(TestPathProvider.LocalConfigFilePath, TestContext.Current.CancellationToken)));
     }
 }

@@ -14,9 +14,10 @@ public class IntegrationTest : IDisposable
 {
     protected Mocks.TestPathProvider? TestPathProvider { get; private set; }
     protected LocaleFileProvider LocaleFileProvider { get; } = new();
+    protected TestConsole TestConsole { get; } = new();
     protected CommandAppTester DefaultCommandAppTester([CallerMemberName] string methodName = "test")
     {
-        var app = DefaultCommandAppBuilder(methodName).Build();
+        var app = DefaultCommandAppBuilder(methodName).Build(TestConsole);
         TestPathProvider = TestPathProvider!.WithDefaultConfig();
         return app;
     }
@@ -29,7 +30,6 @@ public class IntegrationTest : IDisposable
         return builder;
     }
 
-
     public void Dispose()
     {
         Dispose(true);
@@ -38,7 +38,8 @@ public class IntegrationTest : IDisposable
     protected virtual void Dispose(bool disposing)
     {
         LocaleFileProvider.Dispose();
-        (TestPathProvider as IDisposable)?.Dispose();
+        TestConsole.Dispose();
+        TestPathProvider?.Dispose();
     }
 }
 
@@ -53,10 +54,10 @@ public class CommandAppTesterBuilder
         return this; 
     }
     
-    internal CommandAppTester Build()
+    internal CommandAppTester Build(TestConsole? console = null)
     {
         var typeRegistrar = new TypeRegistrar(_services);
-        var commandAppTester = new CommandAppTester(typeRegistrar);
+        var commandAppTester = new CommandAppTester(typeRegistrar, null, console);
         commandAppTester.Configure(cfg => cfg.AddCommands().PropagateExceptions());
         return commandAppTester; 
     }

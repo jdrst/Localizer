@@ -5,14 +5,14 @@ using Localizer.Infrastructure.Configuration;
 using Localizer.Infrastructure.Provider.DeepL;
 using NSubstitute;
 using Shouldly;
-using Spectre.Console.Cli;
+using Spectre.Console.Testing;
 
 namespace Localizer.Tests.IntegrationTests.Commands;
 
 public class TranslateCommandTest : IntegrationTest
 {
     [Fact]
-    public async Task TestSimple()
+    public async Task TestReplaceMe()
     {
         var app = DefaultCommandAppTester();
         
@@ -25,6 +25,27 @@ public class TranslateCommandTest : IntegrationTest
         var locale = await File.ReadAllTextAsync(paths.First(), TestContext.Current.CancellationToken);
         var localeEn = await File.ReadAllTextAsync(paths.Last(), TestContext.Current.CancellationToken);
         await Verify((locale, localeEn));
+    }
+    
+    [Fact]
+    public async Task TestPrompt()
+    {
+        var app = DefaultCommandAppTester();
+        TestConsole.Interactive();
+        TestConsole.Input.PushTextWithEnter("foo");
+        TestConsole.Input.PushTextWithEnter("bar");
+        TestConsole.Input.PushTextWithEnter("baz");
+
+        TestPathProvider!.AddLocalConfig($$"""{"{{nameof(AppOptions.TranslationProvider)}}":"{{nameof(TranslationTextProviderType.Prompt)}}"}""");
+        
+        var paths = LocaleFileProvider.DefaultLocales();
+
+        var result = await app.RunAsync(TranslateCommand.Name, Path.GetFileName(paths.First()));
+        
+        result.ExitCode.ShouldBe(0);
+        var locale = await File.ReadAllTextAsync(paths.First(), TestContext.Current.CancellationToken);
+        var localeEn = await File.ReadAllTextAsync(paths.Last(), TestContext.Current.CancellationToken);
+        await Verify((result.Output, locale, localeEn));
     }
     
     [Fact]
@@ -42,6 +63,9 @@ public class TranslateCommandTest : IntegrationTest
     public async Task TestDeepL()
     {
         var appBuilder = DefaultCommandAppBuilder();
+
+        var responses = new TextResult[3];
+        Array.Fill(responses, new TextResult("foo bar", "de", 12, "modelType"));
         TestPathProvider!.AddGlobalConfig($$"""
                                             {
                                             "{{nameof(AppOptions.TranslationProvider)}}":"{{nameof(TranslationTextProviderType.DeepL)}}",
@@ -52,24 +76,26 @@ public class TranslateCommandTest : IntegrationTest
                                             """);
         var deepLClient = Mocks.TestDeepLClient();
         deepLClient.TranslateTextAsync(
-                Arg.Any<string>(), 
+                Arg.Any<string[]>(), 
                 Arg.Any<string>(), 
                 Arg.Any<string?>()!,
                 Arg.Any<TextTranslateOptions>(), 
                 Arg.Any<CancellationToken>())
-            .Returns(new TextResult("foo bar", "de", 12, "modelType"));
+            .Returns(responses);
         
         appBuilder.ReplaceService<ITranslator>(deepLClient);
         var app = appBuilder.Build();
 
         
         var paths = LocaleFileProvider.DefaultLocales();
+        var localeUzPath =LocaleFileProvider.AddLocales(new LocaleHelper("{}", "uz-Latn-UZ"))[0];
 
         var result = await app.RunAsync(TranslateCommand.Name, Path.GetFileName(paths.First()));
         
         result.ExitCode.ShouldBe(0);
         var locale = await File.ReadAllTextAsync(paths.First(), TestContext.Current.CancellationToken);
         var localeEn = await File.ReadAllTextAsync(paths.Last(), TestContext.Current.CancellationToken);
-        await Verify((result.Output, locale, localeEn));
+        var localeUz = await File.ReadAllTextAsync(localeUzPath, TestContext.Current.CancellationToken);
+        await Verify((result.Output, locale, localeEn, localeUz));
     }
 }

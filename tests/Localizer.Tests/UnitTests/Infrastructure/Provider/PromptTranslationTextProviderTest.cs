@@ -8,7 +8,7 @@ namespace Localizer.Tests.UnitTests.Infrastructure.Provider;
 public class PromptTranslationTextProviderTest
 {
     [Fact]
-    public async Task TestGetTranslationFor()
+    public async Task TestGetTranslationsAsync()
     {
         using var console = new TestConsole();
         console.Input.PushTextWithEnter("bar foo");
@@ -16,10 +16,11 @@ public class PromptTranslationTextProviderTest
         var provider = new PromptTranslationTextProvider(console);
         
 
-        var result = await provider.GetTranslationFor("foo bar", new CultureInfo("en_US"), TestContext.Current.CancellationToken);
+        var result = await provider.GetTranslationsAsync(["foo bar"], new CultureInfo("en_US"), TestContext.Current.CancellationToken);
         
         provider.UsesConsole.ShouldBeTrue();
-        result.ShouldBe("bar foo");
+        result.ShouldHaveSingleItem();
+        result[0].ShouldBe("bar foo");
         await Verify(console.Output);
     }
 }

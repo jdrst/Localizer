@@ -6,5 +6,7 @@ public interface ITranslationTextProvider
 {
     public IReadOnlyList<Message> Messages { get; }
     public bool UsesConsole { get; }
-    public Task<string> GetTranslationFor(string value, CultureInfo cultureInfo, CancellationToken ct = default);
+
+    public Task<string[]> GetTranslationsAsync(string[] texts, CultureInfo cultureInfo,
+        CancellationToken ct = default);
 }

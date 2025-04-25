@@ -22,6 +22,6 @@ public class ConfigValueSetterTest
 
         await valueSetter.SetValueAsync(key, value, isGlobal);
         
-        await Verify(File.ReadAllTextAsync(isGlobal ? pathProvider.GlobalConfigPath : pathProvider.LocalConfigPath, TestContext.Current.CancellationToken));
+        await Verify(File.ReadAllTextAsync(isGlobal ? pathProvider.GlobalConfigFilePath : pathProvider.LocalConfigFilePath, TestContext.Current.CancellationToken));
     }
 }

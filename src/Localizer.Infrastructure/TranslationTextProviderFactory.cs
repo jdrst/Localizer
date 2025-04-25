@@ -5,7 +5,6 @@ using Localizer.Infrastructure.Configuration;
 using Localizer.Infrastructure.Provider;
 using Localizer.Infrastructure.Provider.DeepL;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Spectre.Console;
 

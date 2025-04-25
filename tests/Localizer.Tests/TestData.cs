@@ -68,11 +68,11 @@ public static class TestData
                                                 "OnlyHere": "Nür hiär",
                                                 "Sub": {
                                                   "SubText": "Abc",
-                                                  "SubText2": "Xyz"
-                                                },
-                                                "DoublyNested": {
-                                                  "Something": "Something",
-                                                  "Found": "found"
+                                                  "SubText2": "Xyz",
+                                                  "DoublyNested": {
+                                                    "Something": "Something",
+                                                    "Found": "found"
+                                                  }
                                                 }
                                               }
                                               """;
@@ -81,14 +81,14 @@ public static class TestData
                                                 {
                                                   "TestKey": "Neutral",
                                                   "Sub": {
-                                                    "SubText": "Abc"
+                                                    "SubText": "Abc",
+                                                    "DoublyNested": {
+                                                        "Found": "found"
+                                                    }
                                                   },
                                                   "NotInOther": "Foo",
                                                   "ObjectNotInOther": {
                                                     "SubValue": "value"
-                                                  },
-                                                  "DoublyNested": {
-                                                    "Found": "found"
                                                   }
                                                 }
                                                 """;

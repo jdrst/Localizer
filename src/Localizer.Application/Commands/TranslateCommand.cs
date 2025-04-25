@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Text.Json.Nodes;
 using Localizer.Application.Abstractions;
 using Localizer.Application.Commands.Config.Helpers;
 using Localizer.Core;
@@ -48,14 +49,13 @@ internal class TranslateCommand(IAnsiConsole console, IFileHandler fileHandler, 
                 foreach (var to in culturedJsons)
                 {
                     ctx.Status($"Translating to {to.CultureInfo.DisplayName}.");
-                    await NodeInserter.InsertMissingNodes(baseObject, to.Json, translationTextProvider,
-                        to.CultureInfo);
+                    await InsertAndTranslateAsync(baseObject, to);
                 }
             });
         }
         else
             foreach (var to in culturedJsons)
-                await NodeInserter.InsertMissingNodes(baseObject, to.Json, translationTextProvider, to.CultureInfo);
+                await InsertAndTranslateAsync(baseObject, to);
         
         await fileHandler.WriteFilesAsync(settings.Prefix);
 
@@ -63,5 +63,13 @@ internal class TranslateCommand(IAnsiConsole console, IFileHandler fileHandler, 
             console.WriteMessage(message);
         
         return 0;
+    }
+
+    private async Task InsertAndTranslateAsync(JsonObject from, CulturedJson to)
+    {
+        var (nodes, messages) = NodeInserter.InsertMissingNodes(from, to.Json);
+        foreach (var message in messages)
+            console.WriteMessage(message);
+        await NodeTranslator.TranslateNodesAsync(nodes, translationTextProvider, to.CultureInfo);
     }
 }

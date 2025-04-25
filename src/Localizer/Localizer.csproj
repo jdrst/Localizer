@@ -2,8 +2,9 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <Authors>jdrst</Authors>
+        <PackageId>jdrst.Localizer</PackageId>
         <Copyright>Copyright © $(Authors) $([System.DateTime]::Now.Year)</Copyright>
-        <Description>Command line tool to to translate and/or match kli.Localize localization files</Description>
+        <Description>Command line tool to translate and/or match kli.Localize localization files</Description>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageTags>i18n;internationalization;kli.Localize;localization</PackageTags>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -26,9 +27,9 @@
         <None Include="../../LICENSE" Pack="true" PackagePath="\"/>
         <None Include="../../README.md" Pack="true" PackagePath="\"/>
         <None Include="../../icon.png" Pack="true" PackagePath="\"/>
-        <None Update="appsettings.json" CopyToOutputDirectory="Always" Pack="true" PackagePath="\"/>
-        <None Update="locale.json" CopyToOutputDirectory="PreserveNewest" />
-        <None Update="locale_en.json" CopyToOutputDirectory="PreserveNewest" />
+        <None Update="appsettings.json" CopyToOutputDirectory="Always"/>
+        <None Update="locale.json" CopyToOutputDirectory="PreserveNewest" Pack="false"/>
+        <None Update="locale_en.json" CopyToOutputDirectory="PreserveNewest" Pack="false"/>
     </ItemGroup>
     
     <ItemGroup>

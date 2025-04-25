@@ -11,8 +11,11 @@
     <PackageVersion Include="Spectre.Console.Cli" Version="0.50.1-preview.0.5" />
     <PackageVersion Include="DeepL.net" Version="1.14.0" />
   </ItemGroup>
+  <ItemGroup Label="Analyzers">
+    <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.13.61" />
+  </ItemGroup>  
   <ItemGroup Label="Tests">
-    <PackageVersion Include="Spectre.Console.Testing" Version="0.50.0" />
+    <PackageVersion Include="Spectre.Console.Testing" Version="0.50.1-preview.0.5" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageVersion Include="Microsoft.CodeCoverage" Version="17.13.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />

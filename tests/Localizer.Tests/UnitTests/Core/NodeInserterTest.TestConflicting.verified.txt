@@ -1,0 +1,14 @@
+﻿{
+  Item1:
+{
+  "foo": {
+    "some": "text"
+  }
+},
+  Item2: [
+    {
+      MessageType: Info,
+      Text: Found nodes with the same property name but different kinds. Overriding with the node from the base file.
+    }
+  ]
+}

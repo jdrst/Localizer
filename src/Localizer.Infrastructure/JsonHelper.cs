@@ -27,7 +27,7 @@ public static class JsonHelper
         await File.WriteAllTextAsync(path, json);
     }
 
-    public static async Task<IDictionary<string, string>> GetOptionsFrom(string filePath)
+    public static async Task<IDictionary<string, string>> GetOptionsAsync(string filePath)
     {
         var node = await LoadAsync(filePath) ?? new JsonObject();
 

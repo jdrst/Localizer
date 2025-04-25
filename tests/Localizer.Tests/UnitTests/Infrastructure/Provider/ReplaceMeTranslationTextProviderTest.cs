@@ -7,14 +7,15 @@ namespace Localizer.Tests.UnitTests.Infrastructure.Provider;
 public class ReplaceMeTranslationTextProviderTest
 {
     [Fact]
-    public async Task TestGetTranslationFor()
+    public async Task TestGetTranslationsAsync()
     {
         var provider = new ReplaceMeTranslationTextProvider();
 
         var input = "foo bar";
-        var result = await provider.GetTranslationFor(input, new CultureInfo("en_US"), TestContext.Current.CancellationToken);
+        var result = await provider.GetTranslationsAsync([input], new CultureInfo("en_US"), TestContext.Current.CancellationToken);
         
         provider.UsesConsole.ShouldBeFalse();
-        result.ShouldBe($"{ReplaceMeTranslationTextProvider.ReplaceText} {input}");
+        result.ShouldHaveSingleItem();
+        result[0].ShouldBe($"{ReplaceMeTranslationTextProvider.ReplaceText} {input}");
     }
 }

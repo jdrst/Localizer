@@ -1,4 +1,5 @@
 ﻿using Localizer.Application.Abstractions;
+using Localizer.Infrastructure.Files;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.FileProviders.Physical;
@@ -12,13 +13,15 @@ internal class ConfigurationProvider
     public ConfigurationProvider(IPathProvider pathProvider)
     {
         var configBuilder = new ConfigurationBuilder();
-        using var fileProvider = new PhysicalFileProvider(pathProvider.Root,
+        
+        using var globalCfgFileProvider = new PhysicalFileProvider(Path.GetDirectoryName(pathProvider.GlobalConfigFilePath)!);
+        using var localCfgFileProvider = new PhysicalFileProvider(Path.GetDirectoryName(pathProvider.LocalConfigFilePath)!,
             ExclusionFilters.System | ExclusionFilters.Hidden);
-
+        
         configBuilder
-            .SetFileProvider(fileProvider)
-            .AddJsonFile(pathProvider.GlobalConfigPath)
-            .AddJsonFile(pathProvider.RelativeLocalConfigPath, true);
+            .SetFileProvider(globalCfgFileProvider)
+            .AddJsonFile(globalCfgFileProvider, PathProvider.AppSettingsFile, false, false)
+            .AddJsonFile(localCfgFileProvider, PathProvider.LocalConfigFile, true, false);
 
         _config = configBuilder.Build();
     }

@@ -9,7 +9,7 @@ public class ConfigValueSetter(IPathProvider pathProvider) : IConfigValueSetter
     {
         ArgumentNullException.ThrowIfNull(key, nameof(key));
         
-        var path = isGlobal ? pathProvider.GlobalConfigPath : pathProvider.LocalConfigPath;
+        var path = isGlobal ? pathProvider.GlobalConfigFilePath : pathProvider.LocalConfigFilePath;
         
         var config = await JsonHelper.LoadAsync(path) ?? new JsonObject();
 

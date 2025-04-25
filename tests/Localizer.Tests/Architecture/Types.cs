@@ -24,7 +24,7 @@ internal static class Types
             list.AddRange(In(projectName).GetTypes().Select(t => t.Name));
 
         return list.ToArray();
-    } 
+    }
     internal static NetArchTest.Rules.Types In(string projectName) => _typesMap[projectName];
 
     private static readonly Dictionary<string, NetArchTest.Rules.Types> _typesMap = new()

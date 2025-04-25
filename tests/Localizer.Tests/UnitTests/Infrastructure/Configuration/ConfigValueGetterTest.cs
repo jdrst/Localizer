@@ -22,11 +22,11 @@ public class ConfigValueGetterTest
     }
     
     [Fact]
-    public Task TestList()
+    public async Task TestList()
     {
         using var pathProvider = new Mocks.TestPathProvider().WithDefaultConfig();
         var valueGetter = new ConfigValueGetter(pathProvider);
         
-        return Verify(valueGetter.ListValuesAsync());
+        await Verify(await valueGetter.ListValuesAsync());
     }
 }
