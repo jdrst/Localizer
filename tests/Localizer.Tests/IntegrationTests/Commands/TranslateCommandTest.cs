@@ -93,9 +93,13 @@ public class TranslateCommandTest : IntegrationTest
         var result = await app.RunAsync(TranslateCommand.Name, Path.GetFileName(paths.First()));
         
         result.ExitCode.ShouldBe(0);
+        result.Output.ShouldContain("Translating to");
+        result.Output.ShouldContain("Characters billed this session: ");
+        result.Output.ShouldContain("[Info]: DeepL can't translate to EN, using EN-US instead");
+        result.Output.ShouldContain("[Info]: Characters billed this session:");
         var locale = await File.ReadAllTextAsync(paths.First(), TestContext.Current.CancellationToken);
         var localeEn = await File.ReadAllTextAsync(paths.Last(), TestContext.Current.CancellationToken);
         var localeUz = await File.ReadAllTextAsync(localeUzPath, TestContext.Current.CancellationToken);
-        await Verify((result.Output, locale, localeEn, localeUz));
+        await Verify((locale, localeEn, localeUz));
     }
 }

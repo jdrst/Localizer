@@ -16,7 +16,7 @@ internal class ConfigurationProvider
         
         using var globalCfgFileProvider = new PhysicalFileProvider(Path.GetDirectoryName(pathProvider.GlobalConfigFilePath)!);
         using var localCfgFileProvider = new PhysicalFileProvider(Path.GetDirectoryName(pathProvider.LocalConfigFilePath)!,
-            ExclusionFilters.System | ExclusionFilters.Hidden);
+            ExclusionFilters.System);
         
         configBuilder
             .SetFileProvider(globalCfgFileProvider)
