@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_files", "_files", "{1D0D82
 		.gitignore = .gitignore
 		Directory.Packages.props = Directory.Packages.props
 		version.json = version.json
+		.github\workflows\main.yml = .github\workflows\main.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Localizer.Application", "src\Localizer.Application\Localizer.Application.csproj", "{8427B269-2791-4928-AD16-849B75967BC3}"
