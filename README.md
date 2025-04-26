@@ -62,9 +62,9 @@ For further options check `localizer translate --help`
 
 You can get/set/unset local or global (`-g`) config settings.
 
-See `localizer config get --help` or `localizer config set --help`
+See `localizer config get --help`, `localizer config set --help` or `localizer config list`.
 
-local config settings will be saved in your working directory in a `.localizer` file.
+Local config settings will be saved in your __working directory__ in a `.localizer` file.
 
 ### Currently available config settings:
 
@@ -75,3 +75,6 @@ local config settings will be saved in your working directory in a `.localizer` 
 `DeepL:SourceLanguage` The language you are translating from so DeepL doesn't have to guess. 
 
 DeepL only supports certain languages. See [here](https://developers.deepl.com/docs/api-reference/languages) for a list.
+
+You can also edit your config files manually. Just make sure it's valid JSON.   
+The global config file is `appsettings.json` next to the executable.
