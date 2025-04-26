@@ -1,5 +1,9 @@
 # Localizer
 
+[![CICD](https://github.com/jdrst/Localizer/actions/workflows/main.yml/badge.svg)](https://github.com/jdrst/Localizer/actions/workflows/main.yml) ![NuGet Version](https://img.shields.io/nuget/v/jdrst.Localizer) ![NuGet Downloads](https://img.shields.io/nuget/dt/jdrst.Localizer)
+
+
+
 A little CLI helper for [kli.Localize](https://github.com/kl1mm/localize/). 
 You can pass your [default localization file](https://github.com/kl1mm/localize/?tab=readme-ov-file#create-json-files-for-your-localized-texts)
  and missing nodes in other localization files will be added with their values set depending on the configured provider.
