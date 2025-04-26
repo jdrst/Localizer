@@ -60,7 +60,8 @@ For further options check `localizer translate --help`
 
 ## Configuration
 
-You can get/set/unset local or global (`-g`) config settings.
+You can get/set/unset local or global (`-g`) config settings.  
+Local config takes precedence over global config.
 
 See `localizer config get --help`, `localizer config set --help` or `localizer config list`.
 
