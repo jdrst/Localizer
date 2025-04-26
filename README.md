@@ -23,4 +23,5 @@
 - [ ] Readme/Docs
   - [ ] ASCII Cinema?
 - [x] License
+- [ ] include other licenses
 - [ ] Tabcompletion? Especially for settings.

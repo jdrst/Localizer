@@ -18,10 +18,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_files", "_files", "{1D0D82
 		.gitignore = .gitignore
 		Directory.Packages.props = Directory.Packages.props
 		version.json = version.json
-		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Localizer.Application", "src\Localizer.Application\Localizer.Application.csproj", "{8427B269-2791-4928-AD16-849B75967BC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "build\Build.csproj", "{2D7BB343-D3A8-4B0C-85C2-B9298380FD8C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{7C0F6564-8BB1-4B6E-8F65-4684D199D81D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +52,10 @@ Global
 		{8427B269-2791-4928-AD16-849B75967BC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8427B269-2791-4928-AD16-849B75967BC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8427B269-2791-4928-AD16-849B75967BC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D7BB343-D3A8-4B0C-85C2-B9298380FD8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D7BB343-D3A8-4B0C-85C2-B9298380FD8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D7BB343-D3A8-4B0C-85C2-B9298380FD8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D7BB343-D3A8-4B0C-85C2-B9298380FD8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F5BF726E-6E23-4005-BA21-DDE03E3861A4} = {6B3EE8F1-36E9-4F60-9DD1-86E5E4726084}
@@ -56,5 +63,6 @@ Global
 		{19F982D7-4761-4052-84EE-8507EF0543AE} = {6B3EE8F1-36E9-4F60-9DD1-86E5E4726084}
 		{0A0FBB10-AD8B-4EE1-9360-F28837B68373} = {6B3EE8F1-36E9-4F60-9DD1-86E5E4726084}
 		{8427B269-2791-4928-AD16-849B75967BC3} = {6B3EE8F1-36E9-4F60-9DD1-86E5E4726084}
+		{2D7BB343-D3A8-4B0C-85C2-B9298380FD8C} = {7C0F6564-8BB1-4B6E-8F65-4684D199D81D}
 	EndGlobalSection
 EndGlobal

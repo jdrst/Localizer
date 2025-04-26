@@ -484,5 +484,6 @@ $RECYCLE.BIN/
 *.swp
 
 # code coverage
-coveragereport/
+coverage/
 assets/
+build/tools

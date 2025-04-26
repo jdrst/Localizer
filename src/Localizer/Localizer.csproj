@@ -14,6 +14,8 @@
         <RepositoryCommit>$(GitCommitId)</RepositoryCommit>
         <PackAsTool>true</PackAsTool>
         <PackageIcon>icon.png</PackageIcon>
+        <GenerateSBOM>true</GenerateSBOM>
+        <SbomGenerationFetchLicenseInformation>true</SbomGenerationFetchLicenseInformation>
     </PropertyGroup>
 
     <ItemGroup>
@@ -27,14 +29,16 @@
         <None Include="../../LICENSE" Pack="true" PackagePath="\"/>
         <None Include="../../README.md" Pack="true" PackagePath="\"/>
         <None Include="../../icon.png" Pack="true" PackagePath="\"/>
+        <None Include="../../NOTICES.txt" Pack="true" PackagePath="\"/>
         <None Update="appsettings.json" CopyToOutputDirectory="Always"/>
-        <None Update="locale.json" CopyToOutputDirectory="PreserveNewest" Pack="false"/>
-        <None Update="locale_en.json" CopyToOutputDirectory="PreserveNewest" Pack="false"/>
+        <None Update="locale.json" CopyToOutputDirectory="PreserveNewest" Pack="false" Condition="'$(Configuration)'!='Release'"/>
+        <None Update="locale_en.json" CopyToOutputDirectory="PreserveNewest" Pack="false" Condition="'$(Configuration)'!='Release'"/>
     </ItemGroup>
     
     <ItemGroup>
         <PackageReference Include="Spectre.Console.Cli" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+        <PackageReference Include="Microsoft.Sbom.Targets" PrivateAssets="All" />
     </ItemGroup>
     
     <ItemGroup>
