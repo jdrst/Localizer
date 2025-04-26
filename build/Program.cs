@@ -8,7 +8,7 @@ using Cake.Common.Tools.ReportGenerator;
 using Cake.Core;
 using Cake.Core.IO;
 using Cake.Frosting;
-using Path = System.IO.Path;
+using Path = Cake.Core.IO.Path;
 
 namespace Build;
 
@@ -18,8 +18,6 @@ public static class Program
     {
         return new CakeHost()
             .UseContext<BuildContext>()
-            .InstallTool(new Uri("dotnet:?package=dotnet-coverage&version=17.14.2"))
-            .InstallTool(new Uri("dotnet:?package=DotnetThirdPartyNotices&version=0.3.3"))
             .Run(args);
     }
 }
@@ -40,19 +38,21 @@ public sealed class CleanTask : FrostingTask<BuildContext>
 }
 
 // TODO: via spdx tooling as soon as Microsoft.Sbom.Targets includes license info?
-[TaskName("CreateNoticesFile")]
+[TaskName("ToolRestore")]
 [IsDependentOn(typeof(CleanTask))]
+public sealed class ToolRestoreTask : FrostingTask<BuildContext>
+{
+    public override void Run(BuildContext context) 
+        => context.DotNetTool(Paths.Files.LocalizerSln, "tool", "restore");
+}
+
+// TODO: via spdx tooling as soon as Microsoft.Sbom.Targets includes license info?
+[TaskName("CreateNoticesFile")]
+[IsDependentOn(typeof(ToolRestoreTask))]
 public sealed class CreateNoticesFileTask : FrostingTask<BuildContext>
 {
-    public override void Run(BuildContext context)
-    {
-        var process = context.ProcessRunner.Start(Tools.DotNetThirdPartyNotices, new ProcessSettings
-        {
-            Arguments = "--output-filename ../../NOTICES.txt",
-            WorkingDirectory = Paths.Dirs.Localizer,
-        });
-        process.WaitForExit();
-    }
+    public override void Run(BuildContext context) 
+        => context.DotNetTool(Paths.Files.LocalizerCsproj, Tools.DotNetThirdPartyNotices, "--output-filename ../../NOTICES.txt");
 }
 
 [TaskName("Build")]
@@ -61,11 +61,11 @@ public sealed class BuildTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)
     {
-        context.DotNetBuild(Paths.Files.Localizer, new DotNetBuildSettings
+        context.DotNetBuild(Paths.Files.LocalizerCsproj.ToString(), new DotNetBuildSettings
         {
             Configuration = context.MsBuildConfiguration
         });
-        context.DotNetBuild(Paths.Files.LocalizerTests, new DotNetBuildSettings
+        context.DotNetBuild(Paths.Files.LocalizerTestsCsproj.ToString(), new DotNetBuildSettings
         {
             Configuration = context.MsBuildConfiguration
         });
@@ -78,7 +78,7 @@ public sealed class TestTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)
     {
-        context.DotNetTest(Paths.Files.LocalizerSln, new DotNetTestSettings
+        context.DotNetTest(Paths.Files.LocalizerSln.ToString(), new DotNetTestSettings
         {
             Configuration = context.MsBuildConfiguration,
             NoBuild = true,
@@ -92,14 +92,9 @@ public sealed class ReportCoverageTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)
     {
-        var coberturaPath = Path.Join(Paths.Dirs.LocalizerTests, "output.cobertura.xml");
-        var process = context.ProcessRunner.Start(Tools.DotNetCoverage, new ProcessSettings
-        {
-            Arguments = "collect -f cobertura dotnet run",
-            WorkingDirectory = Paths.Dirs.LocalizerTests,
-        });
-        process.WaitForExit();
-        context.ReportGenerator(new GlobPattern(coberturaPath), Paths.Output.Coverage, new ReportGeneratorSettings()
+        var coberturaPath = Paths.Dirs.LocalizerTests.CombineWithFilePath("output.cobertura.xml");
+        context.DotNetTool(Paths.Files.LocalizerTestsCsproj, Tools.DotNetCoverage, "collect -f cobertura dotnet run");
+        context.ReportGenerator(coberturaPath, Paths.Output.Coverage, new ReportGeneratorSettings()
         {
             ReportTypes = [ReportGeneratorReportType.Html],
             AssemblyFilters = ["+Localizer*", "-Localizer.Tests*"]
@@ -114,7 +109,7 @@ public sealed class PackTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)
     {
-        context.DotNetPack(Paths.Files.Localizer, new DotNetPackSettings
+        context.DotNetPack(Paths.Files.LocalizerCsproj.ToString(), new DotNetPackSettings
         {
             Configuration = context.MsBuildConfiguration,
             NoBuild = true,
@@ -145,20 +140,20 @@ internal static class Paths
 
     internal static class Output
     {
-        internal const string Coverage = "../coverage";
+        internal static readonly DirectoryPath Coverage = "../coverage";
     }
 
     internal static class Dirs
     {
-        internal const string Root = $"../";
-        internal static readonly string Src = Path.Join(Root,"src/");
-        internal static readonly string Tests = Path.Join(Root,"tests/");
-        internal static readonly string Localizer = Path.Join(Src, $"{Names.Localizer}/");
-        internal static readonly string LocalizerTests = Path.Join(Tests, $"{Names.LocalizerTests}/");
+        internal static readonly DirectoryPath Root = "../";
+        internal static readonly DirectoryPath Src = Root.Combine("src/");
+        internal static readonly DirectoryPath Tests = Root.Combine("tests/");
+        internal static readonly DirectoryPath Localizer = Src.Combine($"{Names.Localizer}/");
+        internal static readonly DirectoryPath LocalizerTests = Tests.Combine($"{Names.LocalizerTests}/");
     }
     internal static class Files  {
-        internal static readonly string LocalizerSln = Path.Join(Dirs.Root,$"{Names.Localizer}.sln");
-        internal static readonly string Localizer = Path.Join(Dirs.Localizer,$"{Names.Localizer}.csproj");
-        internal static readonly string LocalizerTests = Path.Join(Dirs.LocalizerTests,$"{Names.LocalizerTests}.csproj");
+        internal static readonly FilePath LocalizerSln = Dirs.Root.GetFilePath($"{Names.Localizer}.sln");
+        internal static readonly FilePath LocalizerCsproj = Dirs.Localizer.GetFilePath($"{Names.Localizer}.csproj");
+        internal static readonly FilePath LocalizerTestsCsproj = Dirs.LocalizerTests.GetFilePath($"{Names.LocalizerTests}.csproj");
     }
 }

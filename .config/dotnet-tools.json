@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "dotnetthirdpartynotices": {
+      "version": "0.3.3",
+      "commands": [
+        "dotnet-thirdpartynotices"
+      ],
+      "rollForward": false
+    },
+    "dotnet-coverage": {
+      "version": "17.14.2",
+      "commands": [
+        "dotnet-coverage"
+      ],
+      "rollForward": false
+    }
+  }
+}
