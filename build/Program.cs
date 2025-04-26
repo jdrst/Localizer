@@ -56,7 +56,7 @@ public sealed class CreateNoticesFileTask : FrostingTask<BuildContext>
 }
 
 [TaskName("Build")]
-[IsDependentOn(typeof(CreateNoticesFileTask))]
+[IsDependentOn(typeof(ToolRestoreTask))]
 public sealed class BuildTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)

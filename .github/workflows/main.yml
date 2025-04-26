@@ -19,10 +19,7 @@ jobs:
         uses: actions/setup-dotnet@v4.0.1
         with:
           dotnet-version: '9.0.x'
-          
-      - name: setup-msbuild
-        uses: microsoft/setup-msbuild@v2
-          
+        
       - name: Run build
         shell: pwsh
         run: .\build.ps1
