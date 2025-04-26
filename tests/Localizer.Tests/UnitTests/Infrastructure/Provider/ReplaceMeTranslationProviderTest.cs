@@ -4,18 +4,18 @@ using Shouldly;
 
 namespace Localizer.Tests.UnitTests.Infrastructure.Provider;
 
-public class ReplaceMeTranslationTextProviderTest
+public class ReplaceMeTranslationProviderTest
 {
     [Fact]
     public async Task TestGetTranslationsAsync()
     {
-        var provider = new ReplaceMeTranslationTextProvider();
+        var provider = new ReplaceMeTranslationProvider();
 
         var input = "foo bar";
         var result = await provider.GetTranslationsAsync([input], new CultureInfo("en_US"), TestContext.Current.CancellationToken);
         
         provider.UsesConsole.ShouldBeFalse();
         result.ShouldHaveSingleItem();
-        result[0].ShouldBe($"{ReplaceMeTranslationTextProvider.ReplaceText} {input}");
+        result[0].ShouldBe($"{ReplaceMeTranslationProvider.ReplaceText} {input}");
     }
 }

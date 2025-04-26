@@ -36,9 +36,9 @@ public static class NodeInserter
 
             if (childKind is JsonValueKind.Object && otherKind is JsonValueKind.Object)
             {
-                var (foo, bar) = InsertMissingNodes(fromChild.AsObject(), toChild.AsObject());
-                nodes.AddRange(foo);
-                messages.AddRange(bar);
+                var (childNodes, childMessages) = InsertMissingNodes(fromChild.AsObject(), toChild.AsObject());
+                nodes.AddRange(childNodes);
+                messages.AddRange(childMessages);
                 continue;
             }
 

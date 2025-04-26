@@ -2,7 +2,7 @@
 
 namespace Localizer.Core.Abstractions;
 
-public interface ITranslationTextProvider
+public interface ITranslationProvider
 {
     public IReadOnlyList<Message> Messages { get; }
     public bool UsesConsole { get; }

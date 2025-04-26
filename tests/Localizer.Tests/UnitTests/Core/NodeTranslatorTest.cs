@@ -11,7 +11,7 @@ public class NodeTranslatorTest
     public async Task TestTranslateNodes()
     {
         var node = JsonNode.Parse(TestData.Json.DefaultLocale)!;
-        await NodeTranslator.TranslateNodesAsync([node], new ReplaceMeTranslationTextProvider(), new CultureInfo("en-US"), TestContext.Current.CancellationToken);
+        await NodeTranslator.TranslateNodesAsync([node], new ReplaceMeTranslationProvider(), new CultureInfo("en-US"), TestContext.Current.CancellationToken);
         
         Assert.True(true);
     }

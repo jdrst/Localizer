@@ -30,8 +30,8 @@ internal static class Types
     private static readonly Dictionary<string, NetArchTest.Rules.Types> _typesMap = new()
     {
         { ProjectNames.Application, NetArchTest.Rules.Types.InAssembly(typeof(IPathProvider).Assembly) },
-        { ProjectNames.Core,NetArchTest.Rules.Types.InAssembly(typeof(ITranslationTextProvider).Assembly)},
-        { ProjectNames.Infrastructure, NetArchTest.Rules.Types.InAssembly(typeof(ReplaceMeTranslationTextProvider).Assembly) },
+        { ProjectNames.Core,NetArchTest.Rules.Types.InAssembly(typeof(ITranslationProvider).Assembly)},
+        { ProjectNames.Infrastructure, NetArchTest.Rules.Types.InAssembly(typeof(ReplaceMeTranslationProvider).Assembly) },
         { ProjectNames.Executable, NetArchTest.Rules.Types.InAssembly(typeof(TypeRegistrar).Assembly) }
     };
 }

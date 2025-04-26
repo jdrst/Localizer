@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace Localizer.Infrastructure.Provider.DeepL;
 
-internal class DeepLTranslationTextProvider : ITranslationTextProvider
+internal class DeepLTranslationProvider : ITranslationProvider
 {
     private const string CharactersBilled = "Characters billed this session: ";
     public IReadOnlyList<Message> Messages
@@ -64,7 +64,7 @@ internal class DeepLTranslationTextProvider : ITranslationTextProvider
     private readonly List<Message> _messages = [];
 
 
-    public DeepLTranslationTextProvider(IOptions<DeepLOptions> options, ITranslator deepLClient, IAppInfo appInfo)
+    public DeepLTranslationProvider(IOptions<DeepLOptions> options, ITranslator deepLClient, IAppInfo appInfo)
     {
         ArgumentNullException.ThrowIfNull(options);
         ArgumentNullException.ThrowIfNull(appInfo);
@@ -79,8 +79,8 @@ internal class DeepLTranslationTextProvider : ITranslationTextProvider
 
     private async Task<string[]> FallbackAsync(string message, string[] texts, CultureInfo cultureInfo, CancellationToken ct = default)
     {
-        var replaceMeProvider = new ReplaceMeTranslationTextProvider();
-        _messages.Add(Message.Error($"{message}. Inserting '{ReplaceMeTranslationTextProvider.ReplaceText}' instead of a translation."));
+        var replaceMeProvider = new ReplaceMeTranslationProvider();
+        _messages.Add(Message.Error($"{message}. Inserting '{ReplaceMeTranslationProvider.ReplaceText}' instead of a translation."));
         return await replaceMeProvider.GetTranslationsAsync(texts, cultureInfo, ct);
     }
 

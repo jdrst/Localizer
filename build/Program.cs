@@ -37,7 +37,6 @@ public sealed class CleanTask : FrostingTask<BuildContext>
     }
 }
 
-// TODO: via spdx tooling as soon as Microsoft.Sbom.Targets includes license info?
 [TaskName("ToolRestore")]
 [IsDependentOn(typeof(CleanTask))]
 public sealed class ToolRestoreTask : FrostingTask<BuildContext>

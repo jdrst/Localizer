@@ -7,7 +7,7 @@ namespace Localizer.Core;
 
 public static class NodeTranslator
 {
-    public static async Task TranslateNodesAsync(IList<JsonNode> nodes, ITranslationTextProvider translationProvider, CultureInfo cultureInfo,
+    public static async Task TranslateNodesAsync(IList<JsonNode> nodes, ITranslationProvider translationProvider, CultureInfo cultureInfo,
         CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(nodes);

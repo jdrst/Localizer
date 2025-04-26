@@ -4,7 +4,7 @@ using Localizer.Core.Abstractions;
 
 namespace Localizer.Infrastructure.Provider;
 
-internal class ReplaceMeTranslationTextProvider : ITranslationTextProvider
+internal class ReplaceMeTranslationProvider : ITranslationProvider
 {
     public const string ReplaceText = "<<replaceme>>";
     public IReadOnlyList<Message> Messages => [];

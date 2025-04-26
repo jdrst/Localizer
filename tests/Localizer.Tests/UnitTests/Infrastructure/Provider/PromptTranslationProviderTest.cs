@@ -5,7 +5,7 @@ using Spectre.Console.Testing;
 
 namespace Localizer.Tests.UnitTests.Infrastructure.Provider;
 
-public class PromptTranslationTextProviderTest
+public class PromptTranslationProviderTest
 {
     [Fact]
     public async Task TestGetTranslationsAsync()
@@ -13,7 +13,7 @@ public class PromptTranslationTextProviderTest
         using var console = new TestConsole();
         console.Input.PushTextWithEnter("bar foo");
         
-        var provider = new PromptTranslationTextProvider(console);
+        var provider = new PromptTranslationProvider(console);
         
 
         var result = await provider.GetTranslationsAsync(["foo bar"], new CultureInfo("en_US"), TestContext.Current.CancellationToken);

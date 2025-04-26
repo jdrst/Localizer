@@ -8,7 +8,7 @@ using Shouldly;
 
 namespace Localizer.Tests.UnitTests.Infrastructure.Provider;
 
-public class DeepLTranslationTextProviderTest
+public class DeepLTranslationProviderTest
 {
      [Fact]
      public async Task TestGetTranslationsAsync()
@@ -22,7 +22,7 @@ public class DeepLTranslationTextProviderTest
                  TestContext.Current.CancellationToken)
              .Returns([new TextResult("foo bar", "de", 12, "modelType")]);
          var options = Mocks.TestOptions<DeepLOptions>();
-         var provider = new DeepLTranslationTextProvider(options, deepLClient, new AppInfo());
+         var provider = new DeepLTranslationProvider(options, deepLClient, new AppInfo());
      
          var input = "bar foo";
          var result = await provider.GetTranslationsAsync([input], new CultureInfo("en-US"), TestContext.Current.CancellationToken);

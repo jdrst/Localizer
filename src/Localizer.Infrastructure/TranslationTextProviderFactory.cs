@@ -12,7 +12,7 @@ namespace Localizer.Infrastructure;
 
 internal static class TranslationTextProviderFactory
 {
-    public static ITranslationTextProvider Create(IServiceProvider services)
+    public static ITranslationProvider Create(IServiceProvider services)
     {
         ArgumentNullException.ThrowIfNull(services);
         
@@ -20,10 +20,10 @@ internal static class TranslationTextProviderFactory
 
         return options.Value.TranslationProvider switch
         {
-            TranslationTextProviderType.ReplaceMe => new ReplaceMeTranslationTextProvider(),
-            TranslationTextProviderType.Prompt => new PromptTranslationTextProvider(
+            TranslationTextProviderType.ReplaceMe => new ReplaceMeTranslationProvider(),
+            TranslationTextProviderType.Prompt => new PromptTranslationProvider(
                 services.GetRequiredService<IAnsiConsole>()),
-            TranslationTextProviderType.DeepL => new DeepLTranslationTextProvider(
+            TranslationTextProviderType.DeepL => new DeepLTranslationProvider(
                 services.GetRequiredService<IOptions<DeepLOptions>>(), services.GetRequiredService<ITranslator>(),
                 services.GetRequiredService<IAppInfo>()),
             _ => throw new ArgumentOutOfRangeException(nameof(services))

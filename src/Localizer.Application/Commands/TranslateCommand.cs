@@ -9,10 +9,10 @@ using Spectre.Console.Cli;
 
 namespace Localizer.Application.Commands;
 
-internal class TranslateCommand(IAnsiConsole console, IFileHandler fileHandler, ITranslationTextProvider translationTextProvider) : AsyncCommand<TranslateCommand.Settings>
+internal class TranslateCommand(IAnsiConsole console, IFileHandler fileHandler, ITranslationProvider translationProvider) : AsyncCommand<TranslateCommand.Settings>
 {
     public const string Name = "translate";
-    public const string Description = "foo bar"; //TODO
+    public const string Description = "Update and translate locale files according to the base file and their respective culture postfix.";
     public const string Example = "translate locale.json";
     internal class Settings : CommandSettings
     {
@@ -40,7 +40,7 @@ internal class TranslateCommand(IAnsiConsole console, IFileHandler fileHandler, 
 
         var culturedJsons = fileHandler.CulturedJsons();
         
-        if (!translationTextProvider.UsesConsole)
+        if (!translationProvider.UsesConsole)
         {
             await console.Status().StartAsync("Translating...",async ctx =>
             {
@@ -59,7 +59,7 @@ internal class TranslateCommand(IAnsiConsole console, IFileHandler fileHandler, 
         
         await fileHandler.WriteFilesAsync(settings.Prefix);
 
-        foreach (var message in translationTextProvider.Messages)
+        foreach (var message in translationProvider.Messages)
             console.WriteMessage(message);
         
         return 0;
@@ -70,6 +70,6 @@ internal class TranslateCommand(IAnsiConsole console, IFileHandler fileHandler, 
         var (nodes, messages) = NodeInserter.InsertMissingNodes(from, to.Json);
         foreach (var message in messages)
             console.WriteMessage(message);
-        await NodeTranslator.TranslateNodesAsync(nodes, translationTextProvider, to.CultureInfo);
+        await NodeTranslator.TranslateNodesAsync(nodes, translationProvider, to.CultureInfo);
     }
 }

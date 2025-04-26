@@ -5,7 +5,7 @@ using Spectre.Console;
 
 namespace Localizer.Infrastructure.Provider;
 
-internal class PromptTranslationTextProvider(IAnsiConsole console) : ITranslationTextProvider
+internal class PromptTranslationProvider(IAnsiConsole console) : ITranslationProvider
 {
     public IReadOnlyList<Message> Messages => [];
     public bool UsesConsole => true;
