@@ -1,6 +1,6 @@
 # Localizer
 
-[![CICD](https://github.com/jdrst/Localizer/actions/workflows/main.yml/badge.svg)](https://github.com/jdrst/Localizer/actions/workflows/main.yml) ![NuGet Version](https://img.shields.io/nuget/v/jdrst.Localizer) ![NuGet Downloads](https://img.shields.io/nuget/dt/jdrst.Localizer)
+[![CICD](https://github.com/jdrst/Localizer/actions/workflows/main.yml/badge.svg)](https://github.com/jdrst/Localizer/actions/workflows/main.yml) [![NuGet Version](https://img.shields.io/nuget/v/jdrst.Localizer)](https://www.nuget.org/packages/jdrst.Localizer) [![NuGet Downloads](https://img.shields.io/nuget/dt/jdrst.Localizer)](https://www.nuget.org/packages/jdrst.Localizer)
 
 
 
@@ -51,7 +51,7 @@ See [here](#configuration) for information regarding configuration.
 ## Installation
 
 ```
-dotnet tool install -g jdrst.Localizer
+dotnet tool install -g jdrst.Localizer --prerelease
 ```
 
 ## Usage
