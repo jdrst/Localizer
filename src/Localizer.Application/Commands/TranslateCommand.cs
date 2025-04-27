@@ -17,7 +17,7 @@ internal class TranslateCommand(IAnsiConsole console, IFileHandler fileHandler, 
     internal class Settings : CommandSettings
     {
         [Description("Base file that is used by 'kli.Localize'. Relative to the current directory.")]
-        [CommandArgument(0, "[base file]")]
+        [CommandArgument(0, "<base file>")]
         public string BaseFilePath { get; set; } = string.Empty;
         
         [Description("Prefix for the resulting files. If not specified files will be changed in place.")]

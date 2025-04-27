@@ -15,7 +15,7 @@ internal class SetCommand(IAnsiConsole console, IConfigValueSetter configValueSe
     internal class Settings : CommandSettings
     {
         [Description("Config key to be set. For nested values use ':' as separator.")] 
-        [CommandArgument(0, "[config key]")] 
+        [CommandArgument(0, "<config key>")] 
         public string Key { get; set; } = string.Empty;
         
         [Description("Config value the key should be set to. Leave empty to unset.")]

@@ -17,6 +17,7 @@ public static class DependencyInjections
 
     public static IConfigurator AddCommands(this IConfigurator cfg)
     {
+        cfg.SetApplicationName("Localizer");
         ArgumentNullException.ThrowIfNull(cfg);
         
         cfg.AddCommand<VersionCommand>(VersionCommand.Name)

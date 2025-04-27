@@ -14,7 +14,7 @@ internal class GetCommand(IAnsiConsole console, IConfigValueGetter configValueGe
     internal class Settings : CommandSettings
     {
         [Description("Config key to get the value for. For nested values use ':' as separator.")] 
-        [CommandArgument(0, "[config key]")] 
+        [CommandArgument(0, "<config key>")] 
         public string Key { get; set; } = string.Empty;
     }
 
