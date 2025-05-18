@@ -4,6 +4,7 @@ using Localizer.Application.Commands;
 using Localizer.Infrastructure.Configuration;
 using Localizer.Infrastructure.Provider.DeepL;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using Shouldly;
 using Spectre.Console.Testing;
 
@@ -82,6 +83,13 @@ public class TranslateCommandTest : IntegrationTest
                 Arg.Any<TextTranslateOptions>(), 
                 Arg.Any<CancellationToken>())
             .Returns(responses);
+        deepLClient.TranslateTextAsync(
+                Arg.Any<string[]>(), 
+                Arg.Any<string>(), 
+                "UZ-LATN-UZ",
+                Arg.Any<TextTranslateOptions>(), 
+                Arg.Any<CancellationToken>())
+            .Throws(new DeepLException("no."));
         
         appBuilder.ReplaceService<ITranslator>(deepLClient);
         var app = appBuilder.Build();

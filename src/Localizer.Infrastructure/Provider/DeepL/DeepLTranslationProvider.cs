@@ -14,7 +14,7 @@ internal class DeepLTranslationProvider : ITranslationProvider
     {
         get
         {
-            //TODO: maybe not in the getter..
+            //TODO: this is bad.
             if (!_messages.Any(msg => msg.Text.StartsWith(CharactersBilled, StringComparison.InvariantCulture)))
                     _messages.Add(Message.Info($"{CharactersBilled}{_charactersBilled}"));
             return _messages;
@@ -22,15 +22,32 @@ internal class DeepLTranslationProvider : ITranslationProvider
     }
 
     public bool UsesConsole => false;
+
+    private int _charactersBilled;
+    private readonly ITranslator _client;
+    private readonly TextTranslateOptions _translateOptions;
+    private readonly string? _sourceLanguage;
+    private readonly List<Message> _messages = [];
+
+    public DeepLTranslationProvider(IOptions<DeepLOptions> options, ITranslator deepLClient, IAppInfo appInfo)
+    {
+        ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(appInfo);
+
+        _client = deepLClient;
+        _sourceLanguage = string.IsNullOrWhiteSpace(options.Value?.SourceLanguage) ? null : options.Value.SourceLanguage;
+        _translateOptions = new TextTranslateOptions
+        {
+            Context = $"We are translating a c# string that might be in composite format. {options.Value?.Context}"
+        };
+    }
+    
     public async Task<string[]> GetTranslationsAsync(string[] texts, CultureInfo cultureInfo, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(cultureInfo);
         ArgumentNullException.ThrowIfNull(texts);
-        
-        var targetLanguage = ToDeepLLanguage(cultureInfo);
-        
-        if (targetLanguage is null)
-            return await FallbackAsync($"DeepL can't translate to {cultureInfo.Name}", texts, cultureInfo, ct);
+
+        var targetLanguage = Adjust(cultureInfo.Name);
 
         try
         {
@@ -46,84 +63,32 @@ internal class DeepLTranslationProvider : ITranslationProvider
         }
         catch (DeepLException ex)
         {
-            switch (ex)
-            {
-                case QuotaExceededException:
-                case TooManyRequestsException:
-                    return await FallbackAsync($"DeepL API Exception: {ex.Message}{Environment.NewLine}", texts, cultureInfo, ct);
-                //this might throw. in that case we probably don't want to continue though, so that should be okay.
-                default: throw;
-            }
+            return await FallbackAsync($"DeepL API Exception: {ex.Message}{Environment.NewLine}", texts, cultureInfo, ct);
         }
-    }
-
-    private int _charactersBilled;
-    private readonly ITranslator _client;
-    private readonly TextTranslateOptions _translateOptions;
-    private readonly string? _sourceLanguage;
-    private readonly List<Message> _messages = [];
-
-
-    public DeepLTranslationProvider(IOptions<DeepLOptions> options, ITranslator deepLClient, IAppInfo appInfo)
-    {
-        ArgumentNullException.ThrowIfNull(options);
-        ArgumentNullException.ThrowIfNull(appInfo);
-
-        _client = deepLClient;
-        _sourceLanguage = string.IsNullOrWhiteSpace(options.Value?.SourceLanguage) ? null : options.Value.SourceLanguage;
-        _translateOptions = new TextTranslateOptions
-        {
-            Context = $"We are translating a c# string that might be in composite format. {options.Value?.Context}"
-        };
     }
 
     private async Task<string[]> FallbackAsync(string message, string[] texts, CultureInfo cultureInfo, CancellationToken ct = default)
     {
         var replaceMeProvider = new ReplaceMeTranslationProvider();
-        _messages.Add(Message.Error($"{message}. Inserting '{ReplaceMeTranslationProvider.ReplaceText}' instead of a translation."));
+        _messages.Add(Message.Error($"{message} Inserting '{ReplaceMeTranslationProvider.ReplaceText}' instead of a translation."));
         return await replaceMeProvider.GetTranslationsAsync(texts, cultureInfo, ct);
     }
 
-    //taken from https://github.com/DeepLcom/openapi/blob/c0bc89c544954ba8d70991f5603479c32f507043/openapi.json#L2975
-    private static readonly string[] SimpleDeepLLanguages =
-    [
-        "BG", "CS", "DA", "DE", "EL", "ES", "ET", "FI", "FR", "HU", "ID", "IT", "JA", "KO", "LT",
-        "LV", "NB", "NL", "PL", "RO", "RU", "SK", "SL", "SV", "TR", "UK", "ZH", 
-    ];
-
-    private static readonly string[] RegionalDeepLLanguages = ["PT-BR", "PT-PT", "ZH-HANS", "EN-GB", "EN-US"];
-    private string? ToDeepLLanguage(CultureInfo cultureInfo)
+    //PT and EN are not supported, EN_(US/UK) PT_(BR/PT) are though 
+    //see https://github.com/DeepLcom/openapi/blob/c0bc89c544954ba8d70991f5603479c32f507043/openapi.json#L2975
+    private string Adjust(string cultureName)
     {
-        var cultureName = cultureInfo.Name.ToUpperInvariant();
-        if (cultureName.Contains('-', StringComparison.InvariantCulture))
-        {
-            if (RegionalDeepLLanguages.Contains(cultureName))
-                return cultureName;
-            cultureName = cultureName.Split("-", StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
-        }
-        if (SimpleDeepLLanguages.Contains(cultureName))
-            return cultureName;
-        //outliers: PT, EN
-        if (TryGetOutliers(cultureName, out var newCultureName))
-        {
-            _messages.Add(Message.Info($"DeepL can't translate to {cultureName}, using {newCultureName} instead"));
-            return newCultureName;
-        }
-        return null;
-    }
-
-    private static bool TryGetOutliers(string? cultureName, out string? newCultureName)
-    {
-        newCultureName = null;
+        cultureName = cultureName.ToUpperInvariant();
         if (cultureName != "EN" && cultureName != "PT")
-            return false;
+            return cultureName;
 
-        newCultureName = cultureName switch
+        var adjustedCultureName = cultureName switch
         {
             "EN" => "EN-US",
             "PT" => "PT-PT",
             _ => throw new ArgumentOutOfRangeException(nameof(cultureName), cultureName)
         };
-        return true;
+        _messages.Add(Message.Info($"DeepL can't translate to {cultureName}, using {adjustedCultureName} instead"));
+        return adjustedCultureName;
     }
 }
