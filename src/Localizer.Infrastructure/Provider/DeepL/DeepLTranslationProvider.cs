@@ -10,16 +10,7 @@ namespace Localizer.Infrastructure.Provider.DeepL;
 internal class DeepLTranslationProvider : ITranslationProvider
 {
     private const string CharactersBilled = "Characters billed this session: ";
-    public IReadOnlyList<Message> Messages
-    {
-        get
-        {
-            //TODO: this is bad.
-            if (!_messages.Any(msg => msg.Text.StartsWith(CharactersBilled, StringComparison.InvariantCulture)))
-                    _messages.Add(Message.Info($"{CharactersBilled}{_charactersBilled}"));
-            return _messages;
-        }
-    }
+    public IReadOnlyList<Message> Messages => _messages;
 
     public bool UsesConsole => false;
 
@@ -40,6 +31,7 @@ internal class DeepLTranslationProvider : ITranslationProvider
         {
             Context = $"We are translating a c# string that might be in composite format. {options.Value?.Context}"
         };
+        _messages.Add(Message.Info(() => $"{CharactersBilled}{_charactersBilled}"));
     }
     
     public async Task<string[]> GetTranslationsAsync(string[] texts, CultureInfo cultureInfo, CancellationToken ct = default)

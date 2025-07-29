@@ -30,7 +30,7 @@ public class DeepLTranslationProviderTest
          provider.UsesConsole.ShouldBeFalse();
          provider.Messages.ShouldHaveSingleItem();
          provider.Messages[0].MessageType.ShouldBe(MessageType.Info);
-         provider.Messages[0].Text.ShouldEndWith("12");
+         provider.Messages[0].Text.ToString().ShouldEndWith("12");
          result.ShouldHaveSingleItem();
          result[0].ShouldBe($"foo bar");
      }

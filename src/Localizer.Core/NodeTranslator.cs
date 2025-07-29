@@ -15,7 +15,7 @@ public static class NodeTranslator
         
         var flattenedStringNodes = GetFlattenedStringNodes(nodes);
         var translations = await translationProvider
-            .GetTranslationsAsync(flattenedStringNodes.Select(node => node.GetValue<string>()).ToArray(), cultureInfo, ct);
+            .GetTranslationsAsync([.. flattenedStringNodes.Select(node => node.GetValue<string>())], cultureInfo, ct);
 
         foreach (var idx in Enumerable.Range(0, flattenedStringNodes.Count))
             flattenedStringNodes[idx].ReplaceWith(translations[idx]);
